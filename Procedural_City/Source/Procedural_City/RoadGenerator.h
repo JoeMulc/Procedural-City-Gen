@@ -39,6 +39,7 @@ struct FRoad
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) ERoadType roadType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) ETurnType roadTurnType;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FVector> sideRoadStart;
+	//previous road end - for side roads maybe???
 };
 
 struct FProposedRoad

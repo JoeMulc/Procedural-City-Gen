@@ -102,13 +102,17 @@ TArray<FRoad> ARoadGenerator::GenerateRoads(TArray<FRoad>& finalNetwork, TArray<
 		//UE_LOG(LogTemp, Display, TEXT("Rand - %f"), randFloat());
 	}
 
-	//for (FRoad road : finalNetwork)
-	//{
-	//	if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Intersection)
-	//	{
-	//		intersectionNetwork.Push(road);
-	//	}
-	//}
+	for (const FRoad intRoad : intersectionNetwork)
+	{
+		for (int i = 0; i < finalNetwork.Num(); i++)
+		{
+			if (intRoad.Start == finalNetwork[i].Start)
+			{
+				finalNetwork[i].roadTurnType = intRoad.roadTurnType;
+				finalNetwork[i].sideRoadStart = intRoad.sideRoadStart;
+			}
+		}
+	}
 
 	mainRoadsComplete = false;
 	mainCheck = false;
@@ -317,8 +321,8 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 				if (FVector::Dist(finalMid, propMid) < 200)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 				{
 					current->segment->roadTurnType = LeftOrRightIntersection(*current->segment, road);
+					current->segment->sideRoadStart.Push(current->segment->Start);
 					current->segment->Start = road.Start;
-					current->segment->sideRoadStart.Push(road.Start);
 					intNet.Push(*current->segment);
 					UE_LOG(LogTemp, Display, TEXT("new"));
 					return false;
@@ -327,8 +331,8 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 			else if (FVector::Dist(finalMid, propMid) < 150)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
 				current->segment->roadTurnType = LeftOrRightIntersection(*current->segment, road);
+				current->segment->sideRoadStart.Push(current->segment->Start);
 				current->segment->Start = road.Start;
-				current->segment->sideRoadStart.Push(road.Start);
 				intNet.Push(*current->segment);
 				UE_LOG(LogTemp, Display, TEXT("new"));
 				return false;
@@ -345,8 +349,8 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 			if (FVector::Dist(finalMid, propMid) < 150 )												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
 				current->segment->roadTurnType = LeftOrRightIntersection(*current->segment, road);
+				current->segment->sideRoadStart.Push(current->segment->Start);
 				current->segment->Start = road.Start;
-				current->segment->sideRoadStart.Push(road.Start);
 				intNet.Push(*current->segment);
 				UE_LOG(LogTemp, Display, TEXT("new"));
 				return false;
