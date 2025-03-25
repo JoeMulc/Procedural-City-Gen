@@ -14,7 +14,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define PROCEDURAL_CITY_WaterBoundingBox_generated_h
 
-#define FID_Users_2100609_Procedural_City_Procedural_City_Gen_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_INCLASS_NO_PURE_DECLS \
+#define FID_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesUWaterBoundingBox(); \
 	friend struct Z_Construct_UClass_UWaterBoundingBox_Statics; \
@@ -23,7 +23,7 @@ public: \
 	DECLARE_SERIALIZER(UWaterBoundingBox)
 
 
-#define FID_Users_2100609_Procedural_City_Procedural_City_Gen_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_ENHANCED_CONSTRUCTORS \
+#define FID_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_ENHANCED_CONSTRUCTORS \
 	/** Standard constructor, called after all reflected properties have been initialized */ \
 	NO_API UWaterBoundingBox(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get()); \
 private: \
@@ -37,12 +37,12 @@ public: \
 	NO_API virtual ~UWaterBoundingBox();
 
 
-#define FID_Users_2100609_Procedural_City_Procedural_City_Gen_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_12_PROLOG
-#define FID_Users_2100609_Procedural_City_Procedural_City_Gen_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_GENERATED_BODY \
+#define FID_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_12_PROLOG
+#define FID_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Users_2100609_Procedural_City_Procedural_City_Gen_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_INCLASS_NO_PURE_DECLS \
-	FID_Users_2100609_Procedural_City_Procedural_City_Gen_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_ENHANCED_CONSTRUCTORS \
+	FID_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_INCLASS_NO_PURE_DECLS \
+	FID_Procedural_City_Source_Procedural_City_WaterBoundingBox_h_15_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -50,7 +50,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> PROCEDURAL_CITY_API UClass* StaticClass<class UWaterBoundingBox>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Users_2100609_Procedural_City_Procedural_City_Gen_Procedural_City_Source_Procedural_City_WaterBoundingBox_h
+#define CURRENT_FILE_ID FID_Procedural_City_Source_Procedural_City_WaterBoundingBox_h
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

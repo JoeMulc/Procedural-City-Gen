@@ -30,6 +30,12 @@
     <Filter Include="Source\Procedural_City">
       <UniqueIdentifier>{7AAE121A-885C-3F96-A500-EA9266721DA9}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\Procedural_City\PlotGenerator.cpp">
+      <Filter>Source\Procedural_City</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Procedural_City\PlotGenerator.h">
+      <Filter>Source\Procedural_City</Filter>
+    </ClInclude>
     <None Include="..\..\Source\Procedural_City\Procedural_City.Build.cs">
       <Filter>Source\Procedural_City</Filter>
     </None>
@@ -43,6 +49,9 @@
       <Filter>Source\Procedural_City</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\Procedural_City\RoadGenerator.h">
+      <Filter>Source\Procedural_City</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Procedural_City\RoadSpec.h">
       <Filter>Source\Procedural_City</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\Procedural_City\WaterBoundingBox.cpp">
