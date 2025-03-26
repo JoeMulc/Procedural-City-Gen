@@ -20,7 +20,7 @@ enum class ETurnType : uint8 {
 	Left,
 	Right,
 	LR,
-	Intersection,
+	Intersecting,
 	IntersectingRight,
 	IntersectingLeft,
 };

@@ -25,9 +25,26 @@ void APlotGenerator::Tick(float DeltaTime)
 
 }
 
+//UE_LOG(LogTemp, Display, TEXT("Bongin! - %i"), secondQ.Top()->roadLength);
 TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 {
+	//Initialise TArrays
 	TArray<FPlot> plotArray;
+	TArray<FRoad> intersectionArray;
+
+	//Get all the intersections
+	for (const FRoad road : finNet)
+	{
+		if (road.roadTurnType != ETurnType::N)
+		{
+			intersectionArray.Push(road);
+		}
+	}
+
+	for (const FRoad road : finNet)
+	{
+		
+	}
 
 
 	return plotArray;

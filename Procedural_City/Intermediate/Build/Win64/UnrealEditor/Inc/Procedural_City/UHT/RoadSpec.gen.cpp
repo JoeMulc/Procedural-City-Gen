@@ -97,9 +97,9 @@ struct Z_Construct_UEnum_Procedural_City_ETurnType_Statics
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
 		{ "BlueprintType", "true" },
+		{ "Intersecting.Name", "ETurnType::Intersecting" },
 		{ "IntersectingLeft.Name", "ETurnType::IntersectingLeft" },
 		{ "IntersectingRight.Name", "ETurnType::IntersectingRight" },
-		{ "Intersection.Name", "ETurnType::Intersection" },
 		{ "Left.Name", "ETurnType::Left" },
 		{ "LR.Name", "ETurnType::LR" },
 		{ "ModuleRelativePath", "RoadSpec.h" },
@@ -112,7 +112,7 @@ struct Z_Construct_UEnum_Procedural_City_ETurnType_Statics
 		{ "ETurnType::Left", (int64)ETurnType::Left },
 		{ "ETurnType::Right", (int64)ETurnType::Right },
 		{ "ETurnType::LR", (int64)ETurnType::LR },
-		{ "ETurnType::Intersection", (int64)ETurnType::Intersection },
+		{ "ETurnType::Intersecting", (int64)ETurnType::Intersecting },
 		{ "ETurnType::IntersectingRight", (int64)ETurnType::IntersectingRight },
 		{ "ETurnType::IntersectingLeft", (int64)ETurnType::IntersectingLeft },
 	};
@@ -214,7 +214,7 @@ const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FRoad_S
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FRoad_Statics::NewProp_roadType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FRoad_Statics::NewProp_roadType = { "roadType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRoad, roadType), Z_Construct_UEnum_Procedural_City_ERoadType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_roadType_MetaData), NewProp_roadType_MetaData) }; // 3610374417
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UScriptStruct_FRoad_Statics::NewProp_roadTurnType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FRoad_Statics::NewProp_roadTurnType = { "roadTurnType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRoad, roadTurnType), Z_Construct_UEnum_Procedural_City_ETurnType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_roadTurnType_MetaData), NewProp_roadTurnType_MetaData) }; // 242323545
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UScriptStruct_FRoad_Statics::NewProp_roadTurnType = { "roadTurnType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRoad, roadTurnType), Z_Construct_UEnum_Procedural_City_ETurnType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_roadTurnType_MetaData), NewProp_roadTurnType_MetaData) }; // 312541945
 const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FRoad_Statics::NewProp_sideRoadStart_Inner = { "sideRoadStart", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FRoad_Statics::NewProp_sideRoadStart = { "sideRoadStart", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FRoad, sideRoadStart), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_sideRoadStart_MetaData), NewProp_sideRoadStart_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FRoad_Statics::PropPointers[] = {
@@ -322,14 +322,14 @@ struct Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec
 {
 	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
 		{ ERoadType_StaticEnum, TEXT("ERoadType"), &Z_Registration_Info_UEnum_ERoadType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 3610374417U) },
-		{ ETurnType_StaticEnum, TEXT("ETurnType"), &Z_Registration_Info_UEnum_ETurnType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 242323545U) },
+		{ ETurnType_StaticEnum, TEXT("ETurnType"), &Z_Registration_Info_UEnum_ETurnType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 312541945U) },
 	};
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
-		{ FRoad::StaticStruct, Z_Construct_UScriptStruct_FRoad_Statics::NewStructOps, TEXT("Road"), &Z_Registration_Info_UScriptStruct_Road, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FRoad), 2615776238U) },
+		{ FRoad::StaticStruct, Z_Construct_UScriptStruct_FRoad_Statics::NewStructOps, TEXT("Road"), &Z_Registration_Info_UScriptStruct_Road, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FRoad), 3261913095U) },
 		{ FPlot::StaticStruct, Z_Construct_UScriptStruct_FPlot_Statics::NewStructOps, TEXT("Plot"), &Z_Registration_Info_UScriptStruct_Plot, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlot), 1398043412U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_3647505915(TEXT("/Script/Procedural_City"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_134715439(TEXT("/Script/Procedural_City"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::EnumInfo));

@@ -47,7 +47,7 @@ template<> PROCEDURAL_CITY_API UEnum* StaticEnum<ERoadType>();
 	op(ETurnType::Left) \
 	op(ETurnType::Right) \
 	op(ETurnType::LR) \
-	op(ETurnType::Intersection) \
+	op(ETurnType::Intersecting) \
 	op(ETurnType::IntersectingRight) \
 	op(ETurnType::IntersectingLeft) 
 

@@ -111,6 +111,10 @@ TArray<FRoad> ARoadGenerator::GenerateRoads(TArray<FRoad>& finalNetwork, TArray<
 				finalNetwork[i].roadTurnType = intRoad.roadTurnType;
 				finalNetwork[i].sideRoadStart = intRoad.sideRoadStart;
 			}
+			else if (intRoad.Start == finalNetwork[i].End)
+			{
+				finalNetwork[i].roadTurnType = ETurnType::Intersecting;
+			}
 		}
 	}
 
@@ -316,10 +320,14 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 		switch (current->segment->roadType)
 		{
 		case(ERoadType::Secondary):
-			if (road.roadType == ERoadType::Main)														//I DESPISE THIS DIST CHECK
+			if (road.roadType == ERoadType::Main)													
 			{
 				if (FVector::Dist(finalMid, propMid) < 200)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 				{
+					//Intersecting
+					intNet.Push(*current->segment);
+
+					//left right intersection
 					current->segment->roadTurnType = LeftOrRightIntersection(*current->segment, road);
 					current->segment->sideRoadStart.Push(current->segment->Start);
 					current->segment->Start = road.Start;
@@ -330,6 +338,10 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 			}
 			else if (FVector::Dist(finalMid, propMid) < 150)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
+				//Intersecting
+				intNet.Push(*current->segment);
+
+				//left right intersection
 				current->segment->roadTurnType = LeftOrRightIntersection(*current->segment, road);
 				current->segment->sideRoadStart.Push(current->segment->Start);
 				current->segment->Start = road.Start;
@@ -348,6 +360,10 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 		default:
 			if (FVector::Dist(finalMid, propMid) < 150 )												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
+				//Intersecting
+				intNet.Push(*current->segment);
+
+				//left right intersection
 				current->segment->roadTurnType = LeftOrRightIntersection(*current->segment, road);
 				current->segment->sideRoadStart.Push(current->segment->Start);
 				current->segment->Start = road.Start;

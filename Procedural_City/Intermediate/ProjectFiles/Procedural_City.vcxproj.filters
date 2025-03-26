@@ -51,7 +51,16 @@
     <ClInclude Include="..\..\Source\Procedural_City\RoadGenerator.h">
       <Filter>Source\Procedural_City</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\Source\Procedural_City\RoadSpec.cpp">
+      <Filter>Source\Procedural_City</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\Source\Procedural_City\RoadSpec.h">
+      <Filter>Source\Procedural_City</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\Procedural_City\RoadSpecs.cpp">
+      <Filter>Source\Procedural_City</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\Procedural_City\RoadSpecs.h">
       <Filter>Source\Procedural_City</Filter>
     </ClInclude>
     <ClCompile Include="..\..\Source\Procedural_City\WaterBoundingBox.cpp">
