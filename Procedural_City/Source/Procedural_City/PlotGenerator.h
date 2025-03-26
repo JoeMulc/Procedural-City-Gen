@@ -22,6 +22,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable) TArray<FPlot> GeneratePlots(TArray<FRoad> finNet);
 
+	FRoad FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad);
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
