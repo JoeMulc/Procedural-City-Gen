@@ -23,6 +23,8 @@ protected:
 	UFUNCTION(BlueprintCallable) TArray<FPlot> GeneratePlots(TArray<FRoad> finNet);
 
 	FRoad FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad);
+	bool determineTraversePath(bool intersected, bool traverseLeft, TArray<FRoad> finNet, FRoad currentRoad);
+	bool findRoadDirection(FRoad intersectingRoad, FRoad intersectedRoad, TArray<FRoad> finNet);
 
 public:	
 	// Called every frame
