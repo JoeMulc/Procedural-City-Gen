@@ -32,88 +32,126 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 	//Initialise TArrays
 	TArray<FPlot> plotArray;
 	TArray<FRoad> intersectionArray;
-	TArray<FVector> plotPoints;
+	FPlot currentPlot;
 
 	FRoad currentRoad;
 	FRoad currentIntersection;
 	bool traverseForward = true;
-	bool traverseLeft = true;
-	bool intersected = false;
 	bool plotFormed = false;
 
 
 	//Get all the intersections
 	for (const FRoad road : finNet)
 	{
-		if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Intersecting)
+		if (road.roadTurnType != ETurnType::N)
 		{
 			intersectionArray.Push(road);
 		}
 	}
 
 	
+	//while (intersectionArray.Num() > 0)
+	//{
+		currentIntersection = intersectionArray.Last();
+		intersectionArray.Pop();
 
-	currentIntersection = intersectionArray.Pop();
-	
-	while (!plotFormed)
-	{
-		if (currentIntersection.roadTurnType == ETurnType::Intersecting)
+		//while (!plotFormed)
+		for (int i =0; i <= 5; i++)
 		{
-			for (const FRoad road : finNet)
+			switch (currentIntersection.roadTurnType)
 			{
-				if (road.sideRoadStart[0] == currentIntersection.End)
+			case (ETurnType::Intersecting):
+				for (const FRoad road : finNet)
 				{
-					intersected = true;
-					traverseLeft = findRoadDirection(currentIntersection, road, finNet);
-					currentIntersection = road;
-					plotPoints.Push(currentIntersection.Start);
-					break;
+					if (!road.sideRoadStart.IsEmpty())
+					{
+						if (road.sideRoadStart[0] == currentIntersection.End || road.sideRoadStart.Last() == currentIntersection.End)
+						{
+							currentIntersection = road;
+							currentPlot.points.Push(currentIntersection.Start);
+							if (road.roadTurnType == ETurnType::IntersectingLeft)
+							{
+								traverseForward = true;
+							}
+							else if (road.roadTurnType == ETurnType::IntersectingRight)
+							{
+								traverseForward = false;
+							}
+							break;
+						}
+					}
+				
 				}
-				else if (road.sideRoadStart[1] == currentIntersection.End)
+
+				plotFormed = false;
+				currentPlot.points.Empty();
+				break;
+
+			case(ETurnType::Left):
+
+				traverseForward = true;
+				currentPlot.points.Push(currentIntersection.Start);
+				for (const FRoad road : finNet)
 				{
-					intersected = false;
-					traverseLeft = findRoadDirection(currentIntersection, road, finNet);
-					currentIntersection = road;
-					plotPoints.Push(currentIntersection.Start);
-					break;
+					if (road.Start == currentIntersection.sideRoadStart[0])
+					{
+						currentIntersection = FindIntersection(traverseForward, finNet, road);
+						break;
+					}
 				}
+				break;
+
+			case(ETurnType::IntersectingLeft):
+
+				traverseForward = false;
+				currentPlot.points.Push(currentIntersection.Start);
+				for (const FRoad road : finNet)
+				{
+					if (road.End == currentIntersection.sideRoadStart[0])
+					{
+						currentIntersection = FindIntersection(traverseForward, finNet, road);
+						break;
+					}
+				}
+				break;
+			case(ETurnType::LR):
+
+				traverseForward = true;
+				currentPlot.points.Push(currentIntersection.Start);
+				for (const FRoad road : finNet)
+				{
+					if (road.Start == currentIntersection.sideRoadStart[0])
+					{
+						currentIntersection = FindIntersection(traverseForward, finNet, road);
+						break;
+					}
+				}
+				break;
+			default:
+
+				plotFormed = false;
+				currentPlot.points.Empty();
+				break;
+			}
+
+			//Check validity of plot
+			if (currentIntersection.Start == badRoad)
+			{
+				plotFormed = true;
+				UE_LOG(LogTemp, Display, TEXT("Bad plot"));
+				currentPlot.points.Empty();
+			}
+			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0])
+			{
+				plotFormed = true;
+				UE_LOG(LogTemp, Display, TEXT("Plot formed lets go!"));
+				plotArray.Push(currentPlot);
+				currentPlot.points.Empty();
 			}
 		}
-		else
-		{
-			intersected = false;
-			plotPoints.Push(currentIntersection.Start);
-		}
-	
-		traverseForward = determineTraversePath(intersected, traverseLeft, finNet, currentIntersection);
-	}
-
-	//for (const FRoad road : finNet)
-	//{
-	//	if (road.Start == currentIntersection.sideRoadStart[0])
-	//	{
-	//		currentRoad = road;
-	//		traverseForward = true;
-	//		UE_LOG(LogTemp, Display, TEXT("ForwardyWarwardy!"));
-	//		break;
-	//	}
-	//	else if (road.End == currentIntersection.sideRoadStart[0])
-	//	{
-	//		currentRoad = road;
-	//		traverseForward = false;
-	//		UE_LOG(LogTemp, Display, TEXT("BackWacky!"));
-	//		break;
-	//	}
 	//}
-	//
-	//currentIntersection = FindIntersection(traverseForward, finNet, currentRoad);
-	//
-	//plotPoints.Push(currentIntersection.Start);
-	//
-	//FPlot plot;
-	//plot.points = plotPoints;
-	//
-	//plotArray.Push(plot);
+	plotArray.Push(currentPlot);
+
 	return plotArray;
 }
 
@@ -130,7 +168,7 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 				if (currentRoad.End == road.Start)
 				{
 					currentRoad = road;
-					if (road.roadTurnType != ETurnType::N)
+					if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Right && road.roadTurnType != ETurnType::IntersectingRight)
 					{
 						intersectionFound = true;
 						UE_LOG(LogTemp, Display, TEXT("Junction Found Lets go!"));
@@ -139,79 +177,35 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 					break;
 				}
 			}
+			//No intersection found
+			currentRoad.Start = badRoad;
+			return currentRoad;
 		}
-	}
-	//else
-	//{
-	//	while (!intersectionFound)
-	//	{
-	//		for (const FRoad road : finNet)
-	//		{
-	//
-	//		}
-	//	}
-	//}
-
-	return currentRoad;
-	
-}
-
-bool APlotGenerator::determineTraversePath(bool intersected, bool intersectedLeft, TArray<FRoad> finNet, FRoad currentRoad)
-{
-	//for (const FRoad road : finNet)
-	//{
-	//	if (road.Start == currentRoad.sideRoadStart[0])
-	//	{
-	//		currentRoad = road;
-	//		traverseForward = true;
-	//		UE_LOG(LogTemp, Display, TEXT("ForwardyWarwardy!"));
-	//		break;
-	//	}
-	//	else if (road.End == currentRoad.sideRoadStart[0])
-	//	{
-	//		currentRoad = road;
-	//		traverseForward = false;
-	//		UE_LOG(LogTemp, Display, TEXT("BackWacky!"));
-	//		break;
-	//	}
-	//}
-	
-	return false;
-}
-
-bool APlotGenerator::findRoadDirection(FRoad intersectingRoad, FRoad intersectedRoad, TArray<FRoad> finNet)
-{
-	//traverse road forward 3 roads
-	for (int i = 0; i <= 3; i++)
-	{
-		for (const FRoad road : finNet)
-		{
-			if (intersectedRoad.End == road.Start)
-			{
-				intersectedRoad = road;
-				break;
-			}
-		}
-	}
-	
-	FVector vec1 = intersectingRoad.End - intersectingRoad.Start;
-	FVector vec2 = intersectedRoad.Start - intersectingRoad.Start;
-
-	double dot = FVector::DotProduct(vec1, vec2);
-	double det = (vec1.X * vec2.Y) - (vec1.Y * vec2.X);
-
-	double angle = atan2(det, dot);
-
-	angle = angle * (180 / PI);
-	UE_LOG(LogTemp, Display, TEXT("Traversing angle - %f"), angle);
-
-	if (angle > 0)
-	{
-		return false;
 	}
 	else
 	{
-		return true;
+		while (!intersectionFound)
+		{
+			for (const FRoad road : finNet)
+			{
+				if (currentRoad.Start == road.End)
+				{
+					currentRoad = road;
+					if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Left && road.roadTurnType != ETurnType::IntersectingLeft)
+					{
+						intersectionFound = true;
+						UE_LOG(LogTemp, Display, TEXT("Junction Found Lets go!"));
+						return currentRoad;
+					}
+					break;
+				}
+			}
+			//No intersection found
+			currentRoad.Start = badRoad;
+			return currentRoad;
+		}
 	}
 
+	return currentRoad;
+	
 }
