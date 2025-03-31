@@ -14,14 +14,14 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define PROCEDURAL_CITY_RoadSpec_generated_h
 
-#define FID_Procedural_City_Source_Procedural_City_RoadSpec_h_31_GENERATED_BODY \
+#define FID_Procedural_City_Source_Procedural_City_RoadSpec_h_33_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FRoad_Statics; \
 	PROCEDURAL_CITY_API static class UScriptStruct* StaticStruct();
 
 
 template<> PROCEDURAL_CITY_API UScriptStruct* StaticStruct<struct FRoad>();
 
-#define FID_Procedural_City_Source_Procedural_City_RoadSpec_h_56_GENERATED_BODY \
+#define FID_Procedural_City_Source_Procedural_City_RoadSpec_h_58_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FPlot_Statics; \
 	PROCEDURAL_CITY_API static class UScriptStruct* StaticStruct();
 
@@ -49,7 +49,9 @@ template<> PROCEDURAL_CITY_API UEnum* StaticEnum<ERoadType>();
 	op(ETurnType::LR) \
 	op(ETurnType::Intersecting) \
 	op(ETurnType::IntersectingRight) \
-	op(ETurnType::IntersectingLeft) 
+	op(ETurnType::IntersectingLeft) \
+	op(ETurnType::traverseBack) \
+	op(ETurnType::traverseForward) 
 
 enum class ETurnType : uint8;
 template<> struct TIsUEnumClass<ETurnType> { enum { Value = true }; };

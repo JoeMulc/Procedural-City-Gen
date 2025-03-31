@@ -23,6 +23,8 @@ enum class ETurnType : uint8 {
 	Intersecting,
 	IntersectingRight,
 	IntersectingLeft,
+	traverseBack,
+	traverseForward,
 };
 
 USTRUCT(BlueprintType)

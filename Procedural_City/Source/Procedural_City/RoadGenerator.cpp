@@ -111,7 +111,7 @@ TArray<FRoad> ARoadGenerator::GenerateRoads(TArray<FRoad>& finalNetwork, TArray<
 				finalNetwork[i].roadTurnType = intRoad.roadTurnType;
 				finalNetwork[i].sideRoadStart = intRoad.sideRoadStart;
 			}
-			else if (intRoad.Start == finalNetwork[i].End && finalNetwork[i].roadType != ERoadType::Main)
+			else if (intRoad.Start == finalNetwork[i].End && finalNetwork[i].roadType == ERoadType::Secondary)
 			{
 				finalNetwork[i].roadTurnType = ETurnType::Intersecting;
 			}
