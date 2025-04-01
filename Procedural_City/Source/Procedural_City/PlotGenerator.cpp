@@ -40,6 +40,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 	bool traverseForward = true;
 	bool plotFormed = false;
 	int tracker = 0;
+	bool roadFound = true;
 
 
 	//Get all the intersections
@@ -61,6 +62,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 
 		while (!plotFormed)
 		{
+			roadFound = false;
 			UE_LOG(LogTemp, Display, TEXT("Current int! - %f"), currentIntersection.Start.X);
 			switch (currentIntersection.roadTurnType)
 			{
@@ -91,6 +93,8 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 					}
 				
 				}
+
+				currentIntersection.Start = badRoad;
 				break;
 
 			case(ETurnType::Left):
@@ -101,10 +105,16 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				{
 					if (road.Start == currentIntersection.sideRoadStart[0])
 					{
+						roadFound = true;
 						currentIntersection = FindIntersection(traverseForward, finNet, road);
 						break;
 					}
 				}
+				if (roadFound == false)
+				{
+					currentIntersection.Start = badRoad;
+				}
+
 				break;
 
 			case(ETurnType::IntersectingLeft):
@@ -115,11 +125,17 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				{
 					if (road.End == currentIntersection.sideRoadStart[0])
 					{
+						roadFound = true;
 						UE_LOG(LogTemp, Display, TEXT("Found road"));
 						currentIntersection = FindIntersection(traverseForward, finNet, road);
 						break;
 					}
 				}
+				if (roadFound == false)
+				{
+					currentIntersection.Start = badRoad;
+				}
+				
 				break;
 			case(ETurnType::LR):
 				UE_LOG(LogTemp, Display, TEXT("LR"));
@@ -129,10 +145,16 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				{
 					if (road.Start == currentIntersection.sideRoadStart[0])
 					{
+						roadFound = true;
 						currentIntersection = FindIntersection(traverseForward, finNet, road);
 						break;
 					}
 				}
+				if (roadFound == false)
+				{
+					currentIntersection.Start = badRoad;
+				}
+				
 				break;
 			case(ETurnType::traverseForward):
 				UE_LOG(LogTemp, Display, TEXT("Traverse Forward"));
@@ -183,38 +205,60 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad)
 {
 	bool intersectionFound = false;
+	bool roadFound = false;
 
 	if (traverseForward)
 	{
 		while (!intersectionFound)
 		{
+			roadFound = false;
 			for (const FRoad road : finNet)
 			{
 				if (currentRoad.End == road.Start)
 				{
+					roadFound = true;
 					currentRoad = road;
-					if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Right && road.roadTurnType != ETurnType::IntersectingRight)
+					if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Right && road.roadTurnType != ETurnType::IntersectingRight && road.roadTurnType != ETurnType::Intersecting)
 					{
 						intersectionFound = true;
 						UE_LOG(LogTemp, Display, TEXT("Forward - Junction Found Lets go!"));
 						return currentRoad;
 					}
+					else if (road.roadTurnType == ETurnType::Intersecting)
+					{
+						for (const FRoad sideRoad : finNet)
+						{
+							if (!sideRoad.sideRoadStart.IsEmpty())
+							{
+								if (sideRoad.sideRoadStart[0] == currentRoad.End || sideRoad.sideRoadStart.Last() == currentRoad.End)
+								{
+									currentRoad = sideRoad;
+									intersectionFound = true;
+									UE_LOG(LogTemp, Display, TEXT("Forward - sideroad found Found Lets go!"));
+									return currentRoad;
+								}
+							}
+						}	
+					}
 					break;
 				}
 			}
-			//No intersection found
-			currentRoad.Start = badRoad;
-			return currentRoad;
+			if (roadFound == false)
+			{
+				intersectionFound = true;
+			}
 		}
 	}
 	else
 	{
 		while (!intersectionFound)
 		{
+			roadFound = false;
 			for (const FRoad road : finNet)
 			{
 				if (currentRoad.Start == road.End)
 				{
+					roadFound = true;
 					currentRoad = road;
 					if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Left && road.roadTurnType != ETurnType::IntersectingLeft)
 					{
@@ -260,12 +304,14 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 					break;
 				}
 			}
-			//No intersection found
-			currentRoad.Start = badRoad;
-			return currentRoad;
+			if (roadFound == false)
+			{
+				intersectionFound = true;
+			}
 		}
 	}
 
-	return currentRoad;
-	
+	UE_LOG(LogTemp, Display, TEXT("End"));
+	currentRoad.Start = badRoad;
+	return currentRoad;	
 }
