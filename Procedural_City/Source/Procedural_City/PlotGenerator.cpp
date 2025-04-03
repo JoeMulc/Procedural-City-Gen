@@ -306,16 +306,17 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 						{
 							if (endRoad.sideRoadStart[0] == currentRoad.Start || endRoad.sideRoadStart.Last() == currentRoad.Start)
 							{
-								UE_LOG(LogTemp, Display, TEXT("Back - Tricky junction found!"));
 
 								if (endRoad.roadTurnType == ETurnType::Right)
 								{
+									UE_LOG(LogTemp, Display, TEXT("Back - Tricky junction found right"));
 									currentRoad = endRoad;
 									currentRoad.roadTurnType = ETurnType::traverseBack;
 									return currentRoad;
 								}
 								else if (endRoad.roadTurnType == ETurnType::Left)
 								{
+									UE_LOG(LogTemp, Display, TEXT("Back - Tricky junction found left"));
 									currentRoad = endRoad;
 									currentRoad.roadTurnType = ETurnType::traverseForward;
 									return currentRoad;
@@ -324,12 +325,14 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 								{
 									if (endRoad.sideRoadStart[0] == currentRoad.Start)
 									{
+										UE_LOG(LogTemp, Display, TEXT("Back - Tricky junction found lr left"));
 										currentRoad = endRoad;
 										currentRoad.roadTurnType = ETurnType::traverseForward;
 										return currentRoad;
 									}
 									else if (endRoad.sideRoadStart[1] == currentRoad.Start)
 									{
+										UE_LOG(LogTemp, Display, TEXT("Back - Tricky junction found lr right"));
 										currentRoad = endRoad;
 										currentRoad.roadTurnType = ETurnType::traverseBack;
 										return currentRoad;
