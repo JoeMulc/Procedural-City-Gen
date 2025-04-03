@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Procedural_CityModuleRules")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Development")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5029f7e73e822d30537afa4480f3648afd1100fb")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d185df95bdf62a4b499a4a09e5ad8c2fa75efc17")]
 [assembly: System.Reflection.AssemblyProductAttribute("Procedural_CityModuleRules")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Procedural_CityModuleRules")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

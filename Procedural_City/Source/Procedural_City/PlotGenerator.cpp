@@ -157,10 +157,31 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				
 				break;
 			case(ETurnType::traverseForward):
-				UE_LOG(LogTemp, Display, TEXT("Traverse Forward"));
+
 				traverseForward = true;
-				currentPlot.points.Push(currentIntersection.Start);
-				currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+
+				if (!currentIntersection.sideRoadStart.IsEmpty())
+				{
+					for (const FRoad road : finNet)
+					{
+						if (!road.sideRoadStart.IsEmpty())
+						{
+							if (road.sideRoadStart[0] == currentIntersection.Start || road.sideRoadStart.Last() == currentIntersection.Start)
+							{
+								UE_LOG(LogTemp, Display, TEXT("Traverse Forward - LR"));
+								currentPlot.points.Push(road.Start);
+								currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+							}
+						}
+					}
+				}
+				else
+				{
+					UE_LOG(LogTemp, Display, TEXT("Traverse Forward - normal"));
+					currentPlot.points.Push(currentIntersection.Start);
+					currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+				}
+				
 				break;
 			case(ETurnType::traverseBack):
 				UE_LOG(LogTemp, Display, TEXT("Traverse Backward"));
@@ -182,7 +203,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				UE_LOG(LogTemp, Warning, TEXT("Bad plot"));
 				currentPlot.points.Empty();
 			}
-			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0] && currentPlot.points.Num() >= 4)
+			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0])
 			{
 				plotFormed = true;
 				UE_LOG(LogTemp, Warning, TEXT("Plot formed lets go!"));
@@ -260,42 +281,59 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 				{
 					roadFound = true;
 					currentRoad = road;
-					if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Left && road.roadTurnType != ETurnType::IntersectingLeft)
+					if (road.roadTurnType != ETurnType::N && road.roadTurnType != ETurnType::Left && road.roadTurnType != ETurnType::IntersectingLeft && road.roadTurnType != ETurnType::LR)
 					{
 						intersectionFound = true;
 						UE_LOG(LogTemp, Display, TEXT("Back - Junction Found Lets go!"));
 						return currentRoad;
 					}
-					else if (!road.sideRoadStart.IsEmpty())
+					else if (road.roadTurnType == ETurnType::LR)
 					{
-						if (road.sideRoadStart[0] == currentRoad.Start || road.sideRoadStart.Last() == currentRoad.Start)
+						for (const FRoad sideRoad : finNet)
 						{
-							UE_LOG(LogTemp, Display, TEXT("Tricky intersection"));
-							if (road.roadTurnType == ETurnType::Left)
+							if (road.sideRoadStart[1] == sideRoad.Start)
 							{
-								currentRoad = road;
+								UE_LOG(LogTemp, Display, TEXT("Back - LR"));
+								currentRoad = sideRoad;
 								currentRoad.roadTurnType = ETurnType::traverseForward;
 								return currentRoad;
 							}
-							else if (road.roadTurnType == ETurnType::Right)
+						}
+					}
+					for (const FRoad endRoad : finNet)
+					{
+						if (!endRoad.sideRoadStart.IsEmpty())
+						{
+							if (endRoad.sideRoadStart[0] == currentRoad.Start || endRoad.sideRoadStart.Last() == currentRoad.Start)
 							{
-								currentRoad = road;
-								currentRoad.roadTurnType = ETurnType::traverseBack;
-								return currentRoad;
-							}
-							else if (road.roadTurnType == ETurnType::LR)
-							{
-								if (road.sideRoadStart[0] == currentRoad.Start)
+								UE_LOG(LogTemp, Display, TEXT("Back - Tricky junction found!"));
+
+								if (endRoad.roadTurnType == ETurnType::Right)
 								{
-									currentRoad = road;
+									currentRoad = endRoad;
+									currentRoad.roadTurnType = ETurnType::traverseBack;
+									return currentRoad;
+								}
+								else if (endRoad.roadTurnType == ETurnType::Left)
+								{
+									currentRoad = endRoad;
 									currentRoad.roadTurnType = ETurnType::traverseForward;
 									return currentRoad;
 								}
-								else
+								else if (endRoad.roadTurnType == ETurnType::LR)
 								{
-									currentRoad = road;
-									currentRoad.roadTurnType = ETurnType::traverseBack;
-									return currentRoad;
+									if (endRoad.sideRoadStart[0] == currentRoad.Start)
+									{
+										currentRoad = endRoad;
+										currentRoad.roadTurnType = ETurnType::traverseForward;
+										return currentRoad;
+									}
+									else if (endRoad.sideRoadStart[1] == currentRoad.Start)
+									{
+										currentRoad = endRoad;
+										currentRoad.roadTurnType = ETurnType::traverseBack;
+										return currentRoad;
+									}
 								}
 							}
 						}
