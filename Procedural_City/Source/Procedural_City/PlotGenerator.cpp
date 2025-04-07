@@ -159,8 +159,13 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 			case(ETurnType::traverseForward):
 
 				traverseForward = true;
-
-				if (!currentIntersection.sideRoadStart.IsEmpty())
+				if (currentIntersection.roadTurnType == ETurnType::IntersectingLeft || currentIntersection.roadTurnType == ETurnType::IntersectingRight)
+				{
+					UE_LOG(LogTemp, Display, TEXT("Traverse Forward - intersecting left/right"));
+					currentPlot.points.Push(currentIntersection.Start);
+					currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+				}
+				else if (!currentIntersection.sideRoadStart.IsEmpty())
 				{
 					for (const FRoad road : finNet)
 					{
@@ -255,6 +260,14 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 								{
 									currentRoad = sideRoad;
 									intersectionFound = true;
+									if (currentRoad.roadTurnType == ETurnType::IntersectingLeft)
+									{
+										currentRoad.roadTurnType = ETurnType::traverseBack;
+									}
+									else
+									{
+										currentRoad.roadTurnType = ETurnType::traverseForward;
+									}
 									UE_LOG(LogTemp, Display, TEXT("Forward - sideroad found Found Lets go!"));
 									return currentRoad;
 								}
