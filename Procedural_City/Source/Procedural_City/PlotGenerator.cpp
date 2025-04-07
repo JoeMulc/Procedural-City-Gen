@@ -28,6 +28,7 @@ void APlotGenerator::Tick(float DeltaTime)
 
 //UE_LOG(LogTemp, Display, TEXT("Bongin! - %i"), secondQ.Top()->roadLength);
 //UE_LOG(LogTemp, Display, TEXT("Bongin!"));
+//need to change default to right intersecting right etc...
 TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 {
 	//Initialise TArrays
@@ -156,16 +157,64 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				}
 				
 				break;
-			case(ETurnType::traverseForward):
-
+			case(ETurnType::Right):
+				UE_LOG(LogTemp, Display, TEXT("Right"));
 				traverseForward = true;
-				if (currentIntersection.roadTurnType == ETurnType::IntersectingLeft || currentIntersection.roadTurnType == ETurnType::IntersectingRight)
+				if (!currentPlot.points.IsEmpty())
 				{
-					UE_LOG(LogTemp, Display, TEXT("Traverse Forward - intersecting left/right"));
 					currentPlot.points.Push(currentIntersection.Start);
-					currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+					for (const FRoad road : finNet)
+					{
+						if (road.Start == currentIntersection.sideRoadStart[0])
+						{
+							roadFound = true;
+							currentIntersection = FindIntersection(traverseForward, finNet, road);
+							break;
+						}
+					}
+					if (roadFound == false)
+					{
+						currentIntersection.Start = badRoad;
+					}
 				}
-				else if (!currentIntersection.sideRoadStart.IsEmpty())
+				else
+				{
+					currentIntersection.Start = badRoad;
+				}
+				break;
+			case(ETurnType::IntersectingRight):
+				UE_LOG(LogTemp, Display, TEXT("InterSecting Right"));
+				traverseForward = false;
+
+				if (!currentPlot.points.IsEmpty())
+				{
+					currentPlot.points.Push(currentIntersection.Start);
+
+					for (const FRoad road : finNet)
+					{
+						if (road.End == currentIntersection.sideRoadStart[0])
+						{
+							roadFound = true;
+							currentIntersection = FindIntersection(traverseForward, finNet, road);
+							break;
+						}
+					}
+					if (roadFound == false)
+					{
+						currentIntersection.Start = badRoad;
+					}
+				}
+				else
+				{
+					currentIntersection.Start = badRoad;
+				}
+
+				break;
+			case(ETurnType::traverseForward):
+				UE_LOG(LogTemp, Display, TEXT("Traverse forward"));
+				traverseForward = true;
+
+				if (currentIntersection.sideRoadStart.IsEmpty())
 				{
 					for (const FRoad road : finNet)
 					{
@@ -173,7 +222,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 						{
 							if (road.sideRoadStart[0] == currentIntersection.Start || road.sideRoadStart.Last() == currentIntersection.Start)
 							{
-								UE_LOG(LogTemp, Display, TEXT("Traverse Forward - LR"));
+								UE_LOG(LogTemp, Display, TEXT("Traverse Forward - junction"));
 								currentPlot.points.Push(road.Start);
 								currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
 							}
@@ -191,8 +240,29 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 			case(ETurnType::traverseBack):
 				UE_LOG(LogTemp, Display, TEXT("Traverse Backward"));
 				traverseForward = false;
-				currentPlot.points.Push(currentIntersection.Start);
-				currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+
+				if (currentIntersection.sideRoadStart.IsEmpty())
+				{
+					for (const FRoad road : finNet)
+					{
+						if (!road.sideRoadStart.IsEmpty())
+						{
+							if (road.sideRoadStart[0] == currentIntersection.Start || road.sideRoadStart.Last() == currentIntersection.Start)
+							{
+								UE_LOG(LogTemp, Display, TEXT("Traverse backward - junction"));
+								currentPlot.points.Push(road.Start);
+								currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+							}
+						}
+					}
+				}
+				else
+				{
+					UE_LOG(LogTemp, Display, TEXT("Traverse backward - normal"));
+					currentPlot.points.Push(currentIntersection.Start);
+					currentIntersection = FindIntersection(traverseForward, finNet, currentIntersection);
+				}
+
 				break;
 			default:
 				UE_LOG(LogTemp, Warning, TEXT("Default"));
