@@ -332,11 +332,11 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 									intersectionFound = true;
 									if (currentRoad.roadTurnType == ETurnType::IntersectingLeft)
 									{
-										currentRoad.roadTurnType = ETurnType::traverseBack;
+										currentRoad.roadTurnType = ETurnType::traverseForward;
 									}
 									else
 									{
-										currentRoad.roadTurnType = ETurnType::traverseForward;
+										currentRoad.roadTurnType = ETurnType::traverseBack;
 									}
 									UE_LOG(LogTemp, Display, TEXT("Forward - sideroad found Found Lets go!"));
 									return currentRoad;
