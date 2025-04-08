@@ -160,54 +160,45 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 			case(ETurnType::Right):
 				UE_LOG(LogTemp, Display, TEXT("Right"));
 				traverseForward = true;
-				if (!currentPlot.points.IsEmpty())
+				
+				currentPlot.points.Push(currentIntersection.Start);
+				for (const FRoad road : finNet)
 				{
-					currentPlot.points.Push(currentIntersection.Start);
-					for (const FRoad road : finNet)
+					if (road.Start == currentIntersection.sideRoadStart[0])
 					{
-						if (road.Start == currentIntersection.sideRoadStart[0])
-						{
-							roadFound = true;
-							currentIntersection = FindIntersection(traverseForward, finNet, road);
-							break;
-						}
-					}
-					if (roadFound == false)
-					{
-						currentIntersection.Start = badRoad;
+						roadFound = true;
+						currentIntersection = FindIntersection(traverseForward, finNet, road);
+						break;
 					}
 				}
-				else
+				if (roadFound == false)
 				{
 					currentIntersection.Start = badRoad;
 				}
+				
 				break;
 			case(ETurnType::IntersectingRight):
 				UE_LOG(LogTemp, Display, TEXT("InterSecting Right"));
 				traverseForward = false;
 
-				if (!currentPlot.points.IsEmpty())
-				{
-					currentPlot.points.Push(currentIntersection.Start);
+				
+				currentPlot.points.Push(currentIntersection.Start);
 
-					for (const FRoad road : finNet)
+				for (const FRoad road : finNet)
+				{
+					if (road.End == currentIntersection.sideRoadStart[0])
 					{
-						if (road.End == currentIntersection.sideRoadStart[0])
-						{
-							roadFound = true;
-							currentIntersection = FindIntersection(traverseForward, finNet, road);
-							break;
-						}
-					}
-					if (roadFound == false)
-					{
-						currentIntersection.Start = badRoad;
+						roadFound = true;
+						currentIntersection = FindIntersection(traverseForward, finNet, road);
+						break;
 					}
 				}
-				else
+				if (roadFound == false)
 				{
 					currentIntersection.Start = badRoad;
 				}
+			
+			
 
 				break;
 			case(ETurnType::traverseForward):
@@ -278,7 +269,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				UE_LOG(LogTemp, Warning, TEXT("Bad plot"));
 				currentPlot.points.Empty();
 			}
-			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0])
+			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0] && currentPlot.points.Num() <= 4)
 			{
 				plotFormed = true;
 				UE_LOG(LogTemp, Warning, TEXT("Plot formed lets go!"));
@@ -438,4 +429,24 @@ FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNe
 	UE_LOG(LogTemp, Display, TEXT("End"));
 	currentRoad.Start = badRoad;
 	return currentRoad;	
+}
+
+//Gauss shoelace formula
+float APlotGenerator::CalculateArea(TArray<FVector> points)	//Believe this is working as expected
+{
+	float area = 0;
+
+	for (int i = 0; i < points.Num(); i++)
+	{
+		area += (points[i].X * points[(i + 1) % points.Num()].Y) - (points[i].Y * points[(i + 1) % points.Num()].X);
+	}
+
+	area = area / 2;
+	
+	if (area < 0)
+	{
+		area *= -1;
+	}
+
+	return area;
 }

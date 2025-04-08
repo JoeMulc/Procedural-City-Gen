@@ -24,6 +24,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable) TArray<FPlot> GeneratePlots(TArray<FRoad> finNet);
 
+	UFUNCTION(BlueprintCallable) float CalculateArea(TArray<FVector> points);
+
 	FRoad FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad);
 	bool determineTraversePath(bool intersected, bool traverseLeft, TArray<FRoad> finNet, FRoad currentRoad);
 
