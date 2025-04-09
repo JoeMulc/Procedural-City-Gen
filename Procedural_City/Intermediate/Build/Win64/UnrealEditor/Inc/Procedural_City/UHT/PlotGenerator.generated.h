@@ -17,6 +17,7 @@ struct FRoad;
 #define PROCEDURAL_CITY_PlotGenerator_generated_h
 
 #define FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execDeflatePolygon); \
 	DECLARE_FUNCTION(execCalculateArea); \
 	DECLARE_FUNCTION(execGeneratePlots);
 

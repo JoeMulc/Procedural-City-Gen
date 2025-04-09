@@ -436,17 +436,55 @@ float APlotGenerator::CalculateArea(TArray<FVector> points)	//Believe this is wo
 {
 	float area = 0;
 
+	//Gauss shoelace formula used to return the area of an irregular polygon
 	for (int i = 0; i < points.Num(); i++)
 	{
 		area += (points[i].X * points[(i + 1) % points.Num()].Y) - (points[i].Y * points[(i + 1) % points.Num()].X);
 	}
-
 	area = area / 2;
 	
+	//Change negative value to positive
 	if (area < 0)
 	{
 		area *= -1;
 	}
 
+	//Convert to killometers
+	area /= 10000;
+
 	return area;
+}
+
+FPlot APlotGenerator::DeflatePolygon(FPlot plot)
+{
+	FPlot deflatedPolygon;
+
+	//convert meters to unreal units
+	deflateDistance *= 100;
+
+	for (int i = 0; i < plot.points.Num(); i++)
+	{
+		FVector current = plot.points[i];
+		FVector next = plot.points[(i + 1) % plot.points.Num()];
+		FVector prev = plot.points[(i - 1 + plot.points.Num()) % plot.points.Num()];
+
+		FVector edge1 = current - prev;
+		FVector edge2 = next - current;
+
+		edge1 = FVector(-edge1.Y, edge1.X, 0);
+		edge2 = FVector(-edge2.Y, edge2.X, 0);
+
+		edge1.Normalize();
+		edge2.Normalize();
+
+		FVector avgNormal = edge1 + edge2;
+		avgNormal.Normalize();
+
+		FVector newVertex = current + (avgNormal * deflateDistance);
+
+		deflatedPolygon.points.Push(newVertex);
+
+	}
+
+	return deflatedPolygon;
 }

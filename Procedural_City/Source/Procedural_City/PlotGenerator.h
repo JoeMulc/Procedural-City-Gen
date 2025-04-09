@@ -26,8 +26,15 @@ protected:
 
 	UFUNCTION(BlueprintCallable) float CalculateArea(TArray<FVector> points);
 
+	UFUNCTION(BlueprintCallable) FPlot DeflatePolygon(FPlot plot);
+
 	FRoad FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad);
 	bool determineTraversePath(bool intersected, bool traverseLeft, TArray<FRoad> finNet, FRoad currentRoad);
+
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float deflateDistance = -25;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float minPlotSize;
+	
 
 public:	
 	// Called every frame
