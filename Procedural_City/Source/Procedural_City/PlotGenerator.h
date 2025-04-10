@@ -32,7 +32,7 @@ protected:
 	bool determineTraversePath(bool intersected, bool traverseLeft, TArray<FRoad> finNet, FRoad currentRoad);
 
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float deflateDistance = -25;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float deflateDistance = -10;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float minPlotSize;
 	
 
