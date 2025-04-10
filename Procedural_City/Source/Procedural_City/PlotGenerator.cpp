@@ -488,3 +488,67 @@ FPlot APlotGenerator::DeflatePolygon(FPlot plot)
 
 	return deflatedPolygon;
 }
+
+//Combine Plots that are too small and determine roads to destroy
+TArray<FVector> APlotGenerator::FinalizePlots(TArray<FPlot> &plotArr)
+{
+	float sharedSideCount = 0;
+	bool plotFound = false;
+	FPlot sidePlot;
+	TArray<FVector> roadsToDestroy;
+	TArray<FVector> sharedInter;
+	TArray<FVector> notSharedInter;
+
+	for (int i = 0; i < plotArr.Num(); i++)
+	{
+		if (CalculateArea(plotArr[i].points) < minPlotSize)
+		{
+
+			for (const FPlot plot : plotArr)
+			{
+				if (sharedSideCount == 2) break;
+
+				sharedSideCount = 0;
+				notSharedInter.Empty();
+				sharedInter.Empty();
+
+				for (const FVector inter : plot.points)
+				{
+					if (sharedSideCount == 2) break;
+
+					for (const FVector pInter : plotArr[i].points)						//nested for loops GROSS!
+					{
+						if (pInter == inter)
+						{
+							sharedSideCount++;
+							sharedInter.Push(inter);
+						}
+						if (sharedSideCount >= 2)
+						{
+							plotFound = true;
+							sidePlot = plot;
+							break;
+						}
+						notSharedInter.Push(inter);
+					}
+				}
+			}
+
+			if (plotFound)					//its gonna matter if plots are ordered clockwise
+			{
+				for (int y = 0; y < plotArr[i].points.Num(); i++)
+				{
+					if (plotArr[i].points[y] == sharedInter[0] || plotArr[i].points[y] == sharedInter.Last())
+					{
+						plotArr[i].points[y] = notSharedInter.Pop();
+					}
+				}
+			}
+
+
+		}
+	}
+
+	return roadsToDestroy;
+
+}

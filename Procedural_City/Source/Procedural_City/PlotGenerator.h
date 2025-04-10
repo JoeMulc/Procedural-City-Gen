@@ -24,6 +24,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable) TArray<FPlot> GeneratePlots(TArray<FRoad> finNet);
 
+	UFUNCTION(BlueprintCallable) TArray<FVector> FinalizePlots(TArray<FPlot> &plotArr);
+
 	UFUNCTION(BlueprintCallable) float CalculateArea(TArray<FVector> points);
 
 	UFUNCTION(BlueprintCallable) FPlot DeflatePolygon(FPlot plot);
@@ -33,7 +35,7 @@ protected:
 
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float deflateDistance = -10;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float minPlotSize;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float minPlotSize = 8000;
 	
 
 public:	
