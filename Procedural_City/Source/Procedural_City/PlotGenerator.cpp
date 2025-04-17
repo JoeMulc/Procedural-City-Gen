@@ -34,6 +34,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 	//Initialise TArrays
 	TArray<FPlot> plotArray;
 	TArray<FRoad> intersectionArray;
+	TArray<FVector> roadsToDestroy;
 	FPlot currentPlot;
 
 	FRoad currentRoad;
@@ -497,56 +498,65 @@ TArray<FVector> APlotGenerator::FinalizePlots(TArray<FPlot> &plotArr)
 	FPlot sidePlot;
 	TArray<FVector> roadsToDestroy;
 	TArray<FVector> sharedInter;
-	TArray<FVector> notSharedInter;
 
-	for (int i = 0; i < plotArr.Num(); i++)
+	//For every plot in the plot array
+	for (FPlot plot : plotArr)
 	{
-		if (CalculateArea(plotArr[i].points) < minPlotSize)
+		//if plot size is too small
+		if (CalculateArea(plot.points) < minPlotSize)
 		{
-
-			for (const FPlot plot : plotArr)
+			//For every plot in the plot array
+			for (const FPlot interPlot : plotArr)
 			{
-				if (sharedSideCount == 2) break;
+				if (plotFound == true) break;
 
-				sharedSideCount = 0;
-				notSharedInter.Empty();
+				plotFound = false;
 				sharedInter.Empty();
 
-				for (const FVector inter : plot.points)
+				//For every point in the other plot
+				for (const FVector point : plot.points)
 				{
-					if (sharedSideCount == 2) break;
+					if (plotFound == true) break;
 
-					for (const FVector pInter : plotArr[i].points)						//nested for loops GROSS!
+					for (const FVector interPoint : interPlot.points)
 					{
-						if (pInter == inter)
+						if (plotFound == true) break;
+
+						if (point == interPoint)
 						{
-							sharedSideCount++;
-							sharedInter.Push(inter);
+							sharedInter.Push(point);
 						}
-						if (sharedSideCount >= 2)
+
+						if (sharedInter.Num() == 2)
 						{
 							plotFound = true;
-							sidePlot = plot;
-							break;
+							sidePlot = interPlot;
 						}
-						notSharedInter.Push(inter);
 					}
 				}
-			}
 
-			if (plotFound)					//its gonna matter if plots are ordered clockwise
-			{
-				for (int y = 0; y < plotArr[i].points.Num(); i++)
+				if (plotFound)
 				{
-					if (plotArr[i].points[y] == sharedInter[0] || plotArr[i].points[y] == sharedInter.Last())
+					int counter;
+					for (FVector curPoint : plot.points)
 					{
-						plotArr[i].points[y] = notSharedInter.Pop();
+						counter = 0;
+						for (const FVector intPoint : sidePlot.points)
+						{
+							if (curPoint != intPoint)
+							{
+								counter++;
+							}
+						}
+						if (counter != 4)
+						{
+							curPoint = sharedInter.Pop();
+						}
 					}
 				}
 			}
-
-
 		}
+		
 	}
 
 	return roadsToDestroy;
