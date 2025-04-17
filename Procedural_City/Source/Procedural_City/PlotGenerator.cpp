@@ -287,6 +287,11 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 		}
 	}
 
+	for (int i = 0; i < plotArray.Num(); i++)
+	{
+		plotArray[i] = DeflatePolygon(plotArray[i]);
+	}
+
 	return plotArray;
 }
 
