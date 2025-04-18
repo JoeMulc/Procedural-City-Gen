@@ -60,6 +60,14 @@ struct FPlot
 	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FVector> points;
 };
 
+USTRUCT(BlueprintType)
+struct FLot
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite) TArray<FVector> points;
+};
+
 
 
 class PROCEDURAL_CITY_API RoadSpec

@@ -30,6 +30,8 @@ protected:
 
 	UFUNCTION(BlueprintCallable) FPlot DeflatePolygon(FPlot plot);
 
+	UFUNCTION(BlueprintCallable) TArray<FLot> SubdivideToLots(FPlot plot);
+
 	FRoad FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad);
 	bool determineTraversePath(bool intersected, bool traverseLeft, TArray<FRoad> finNet, FRoad currentRoad);
 

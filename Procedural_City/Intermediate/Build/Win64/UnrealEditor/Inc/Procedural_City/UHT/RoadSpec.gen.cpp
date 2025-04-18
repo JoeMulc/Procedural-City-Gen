@@ -13,6 +13,7 @@ void EmptyLinkFunctionForGeneratedCodeRoadSpec() {}
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 PROCEDURAL_CITY_API UEnum* Z_Construct_UEnum_Procedural_City_ERoadType();
 PROCEDURAL_CITY_API UEnum* Z_Construct_UEnum_Procedural_City_ETurnType();
+PROCEDURAL_CITY_API UScriptStruct* Z_Construct_UScriptStruct_FLot();
 PROCEDURAL_CITY_API UScriptStruct* Z_Construct_UScriptStruct_FPlot();
 PROCEDURAL_CITY_API UScriptStruct* Z_Construct_UScriptStruct_FRoad();
 UPackage* Z_Construct_UPackage__Script_Procedural_City();
@@ -321,6 +322,71 @@ UScriptStruct* Z_Construct_UScriptStruct_FPlot()
 }
 // End ScriptStruct FPlot
 
+// Begin ScriptStruct FLot
+static FStructRegistrationInfo Z_Registration_Info_UScriptStruct_Lot;
+class UScriptStruct* FLot::StaticStruct()
+{
+	if (!Z_Registration_Info_UScriptStruct_Lot.OuterSingleton)
+	{
+		Z_Registration_Info_UScriptStruct_Lot.OuterSingleton = GetStaticStruct(Z_Construct_UScriptStruct_FLot, (UObject*)Z_Construct_UPackage__Script_Procedural_City(), TEXT("Lot"));
+	}
+	return Z_Registration_Info_UScriptStruct_Lot.OuterSingleton;
+}
+template<> PROCEDURAL_CITY_API UScriptStruct* StaticStruct<FLot>()
+{
+	return FLot::StaticStruct();
+}
+struct Z_Construct_UScriptStruct_FLot_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Struct_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+		{ "ModuleRelativePath", "RoadSpec.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_points_MetaData[] = {
+		{ "Category", "Lot" },
+		{ "ModuleRelativePath", "RoadSpec.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_points_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_points;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static void* NewStructOps()
+	{
+		return (UScriptStruct::ICppStructOps*)new UScriptStruct::TCppStructOps<FLot>();
+	}
+	static const UECodeGen_Private::FStructParams StructParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UScriptStruct_FLot_Statics::NewProp_points_Inner = { "points", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UScriptStruct_FLot_Statics::NewProp_points = { "points", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(FLot, points), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_points_MetaData), NewProp_points_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UScriptStruct_FLot_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FLot_Statics::NewProp_points_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UScriptStruct_FLot_Statics::NewProp_points,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FLot_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FStructParams Z_Construct_UScriptStruct_FLot_Statics::StructParams = {
+	(UObject* (*)())Z_Construct_UPackage__Script_Procedural_City,
+	nullptr,
+	&NewStructOps,
+	"Lot",
+	Z_Construct_UScriptStruct_FLot_Statics::PropPointers,
+	UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FLot_Statics::PropPointers),
+	sizeof(FLot),
+	alignof(FLot),
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	EStructFlags(0x00000001),
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UScriptStruct_FLot_Statics::Struct_MetaDataParams), Z_Construct_UScriptStruct_FLot_Statics::Struct_MetaDataParams)
+};
+UScriptStruct* Z_Construct_UScriptStruct_FLot()
+{
+	if (!Z_Registration_Info_UScriptStruct_Lot.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUScriptStruct(Z_Registration_Info_UScriptStruct_Lot.InnerSingleton, Z_Construct_UScriptStruct_FLot_Statics::StructParams);
+	}
+	return Z_Registration_Info_UScriptStruct_Lot.InnerSingleton;
+}
+// End ScriptStruct FLot
+
 // Begin Registration
 struct Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics
 {
@@ -331,9 +397,10 @@ struct Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec
 	static constexpr FStructRegisterCompiledInInfo ScriptStructInfo[] = {
 		{ FRoad::StaticStruct, Z_Construct_UScriptStruct_FRoad_Statics::NewStructOps, TEXT("Road"), &Z_Registration_Info_UScriptStruct_Road, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FRoad), 737840056U) },
 		{ FPlot::StaticStruct, Z_Construct_UScriptStruct_FPlot_Statics::NewStructOps, TEXT("Plot"), &Z_Registration_Info_UScriptStruct_Plot, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FPlot), 1398043412U) },
+		{ FLot::StaticStruct, Z_Construct_UScriptStruct_FLot_Statics::NewStructOps, TEXT("Lot"), &Z_Registration_Info_UScriptStruct_Lot, CONSTRUCT_RELOAD_VERSION_INFO(FStructReloadVersionInfo, sizeof(FLot), 1060805221U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_2254564876(TEXT("/Script/Procedural_City"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_274588835(TEXT("/Script/Procedural_City"),
 	nullptr, 0,
 	Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::ScriptStructInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::ScriptStructInfo),
 	Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_RoadSpec_h_Statics::EnumInfo));

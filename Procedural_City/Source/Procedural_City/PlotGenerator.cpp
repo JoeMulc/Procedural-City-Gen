@@ -287,10 +287,10 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 		}
 	}
 
-	for (int i = 0; i < plotArray.Num(); i++)
-	{
-		plotArray[i] = DeflatePolygon(plotArray[i]);
-	}
+	//for (int i = 0; i < plotArray.Num(); i++)
+	//{
+	//	plotArray[i] = DeflatePolygon(plotArray[i]);
+	//}
 
 	return plotArray;
 }
@@ -565,5 +565,46 @@ TArray<FVector> APlotGenerator::FinalizePlots(TArray<FPlot> &plotArr)
 	}
 
 	return roadsToDestroy;
+
+}
+
+TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
+{
+	FVector edge1 = plot.points[0] - plot.points[1];
+	FVector edge2 = plot.points[2] - plot.points[3];
+
+	TArray<FLot> lots;
+
+	FVector A = plot.points[0];
+	FVector B = plot.points[1];
+	FVector C = plot.points[2];
+	FVector D = plot.points[3];
+
+	int MinPlotWidth = 4600;
+
+	int NumDivisions = FMath::FloorToInt(FVector::Dist(A, B) / MinPlotWidth);
+	NumDivisions = FMath::Max(1, NumDivisions);
+
+	for (int i = 0; i < NumDivisions; ++i)	//change
+	{
+		float T0 = (float)i / NumDivisions;
+		float T1 = (float)(i + 1) / NumDivisions;
+
+		FVector EdgeStart1 = FMath::Lerp(A, B, T0);
+		FVector EdgeEnd1 = FMath::Lerp(A, B, T1);
+		FVector EdgeStart2 = FMath::Lerp(D, C, T0);
+		FVector EdgeEnd2 = FMath::Lerp(D, C, T1);
+
+
+		FLot l;
+		l.points.Push(EdgeStart1);
+		l.points.Push(EdgeEnd1);
+		l.points.Push(EdgeStart2);
+		l.points.Push(EdgeEnd2);
+
+		lots.Push(l);
+	}
+
+	return lots;
 
 }

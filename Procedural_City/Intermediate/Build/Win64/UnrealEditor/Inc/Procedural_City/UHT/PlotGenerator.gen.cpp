@@ -15,6 +15,7 @@ COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_AActor();
 PROCEDURAL_CITY_API UClass* Z_Construct_UClass_APlotGenerator();
 PROCEDURAL_CITY_API UClass* Z_Construct_UClass_APlotGenerator_NoRegister();
+PROCEDURAL_CITY_API UScriptStruct* Z_Construct_UScriptStruct_FLot();
 PROCEDURAL_CITY_API UScriptStruct* Z_Construct_UScriptStruct_FPlot();
 PROCEDURAL_CITY_API UScriptStruct* Z_Construct_UScriptStruct_FRoad();
 UPackage* Z_Construct_UPackage__Script_Procedural_City();
@@ -219,6 +220,55 @@ DEFINE_FUNCTION(APlotGenerator::execGeneratePlots)
 }
 // End Class APlotGenerator Function GeneratePlots
 
+// Begin Class APlotGenerator Function SubdivideToLots
+struct Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics
+{
+	struct PlotGenerator_eventSubdivideToLots_Parms
+	{
+		FPlot plot;
+		TArray<FLot> ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "ModuleRelativePath", "PlotGenerator.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_plot;
+	static const UECodeGen_Private::FStructPropertyParams NewProp_ReturnValue_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::NewProp_plot = { "plot", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlotGenerator_eventSubdivideToLots_Parms, plot), Z_Construct_UScriptStruct_FPlot, METADATA_PARAMS(0, nullptr) }; // 1398043412
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UScriptStruct_FLot, METADATA_PARAMS(0, nullptr) }; // 1060805221
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(PlotGenerator_eventSubdivideToLots_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) }; // 1060805221
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::NewProp_plot,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::NewProp_ReturnValue_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_APlotGenerator, nullptr, "SubdivideToLots", nullptr, nullptr, Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::PropPointers), sizeof(Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::PlotGenerator_eventSubdivideToLots_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04080401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::Function_MetaDataParams), Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::PlotGenerator_eventSubdivideToLots_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_APlotGenerator_SubdivideToLots()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_APlotGenerator_SubdivideToLots_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(APlotGenerator::execSubdivideToLots)
+{
+	P_GET_STRUCT(FPlot,Z_Param_plot);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(TArray<FLot>*)Z_Param__Result=P_THIS->SubdivideToLots(Z_Param_plot);
+	P_NATIVE_END;
+}
+// End Class APlotGenerator Function SubdivideToLots
+
 // Begin Class APlotGenerator
 void APlotGenerator::StaticRegisterNativesAPlotGenerator()
 {
@@ -228,6 +278,7 @@ void APlotGenerator::StaticRegisterNativesAPlotGenerator()
 		{ "DeflatePolygon", &APlotGenerator::execDeflatePolygon },
 		{ "FinalizePlots", &APlotGenerator::execFinalizePlots },
 		{ "GeneratePlots", &APlotGenerator::execGeneratePlots },
+		{ "SubdivideToLots", &APlotGenerator::execSubdivideToLots },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -261,6 +312,7 @@ struct Z_Construct_UClass_APlotGenerator_Statics
 		{ &Z_Construct_UFunction_APlotGenerator_DeflatePolygon, "DeflatePolygon" }, // 348039749
 		{ &Z_Construct_UFunction_APlotGenerator_FinalizePlots, "FinalizePlots" }, // 2815918973
 		{ &Z_Construct_UFunction_APlotGenerator_GeneratePlots, "GeneratePlots" }, // 752610874
+		{ &Z_Construct_UFunction_APlotGenerator_SubdivideToLots, "SubdivideToLots" }, // 180224947
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -315,10 +367,10 @@ APlotGenerator::~APlotGenerator() {}
 struct Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_APlotGenerator, APlotGenerator::StaticClass, TEXT("APlotGenerator"), &Z_Registration_Info_UClass_APlotGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlotGenerator), 733519433U) },
+		{ Z_Construct_UClass_APlotGenerator, APlotGenerator::StaticClass, TEXT("APlotGenerator"), &Z_Registration_Info_UClass_APlotGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlotGenerator), 3423317526U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_449420339(TEXT("/Script/Procedural_City"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_970932411(TEXT("/Script/Procedural_City"),
 	Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
