@@ -302,9 +302,14 @@ struct Z_Construct_UClass_APlotGenerator_Statics
 		{ "Category", "Plot Generation|General" },
 		{ "ModuleRelativePath", "PlotGenerator.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MinLotWidth_MetaData[] = {
+		{ "Category", "Plot Generation|General" },
+		{ "ModuleRelativePath", "PlotGenerator.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_deflateDistance;
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_minPlotSize;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_MinLotWidth;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
@@ -322,9 +327,11 @@ struct Z_Construct_UClass_APlotGenerator_Statics
 };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlotGenerator_Statics::NewProp_deflateDistance = { "deflateDistance", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlotGenerator, deflateDistance), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_deflateDistance_MetaData), NewProp_deflateDistance_MetaData) };
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_APlotGenerator_Statics::NewProp_minPlotSize = { "minPlotSize", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlotGenerator, minPlotSize), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_minPlotSize_MetaData), NewProp_minPlotSize_MetaData) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_APlotGenerator_Statics::NewProp_MinLotWidth = { "MinLotWidth", nullptr, (EPropertyFlags)0x0020080000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(APlotGenerator, MinLotWidth), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MinLotWidth_MetaData), NewProp_MinLotWidth_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_APlotGenerator_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlotGenerator_Statics::NewProp_deflateDistance,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlotGenerator_Statics::NewProp_minPlotSize,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_APlotGenerator_Statics::NewProp_MinLotWidth,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_APlotGenerator_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_APlotGenerator_Statics::DependentSingletons[])() = {
@@ -367,10 +374,10 @@ APlotGenerator::~APlotGenerator() {}
 struct Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_APlotGenerator, APlotGenerator::StaticClass, TEXT("APlotGenerator"), &Z_Registration_Info_UClass_APlotGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlotGenerator), 3423317526U) },
+		{ Z_Construct_UClass_APlotGenerator, APlotGenerator::StaticClass, TEXT("APlotGenerator"), &Z_Registration_Info_UClass_APlotGenerator, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(APlotGenerator), 393319444U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_970932411(TEXT("/Script/Procedural_City"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_1094776929(TEXT("/Script/Procedural_City"),
 	Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

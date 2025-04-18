@@ -10,6 +10,8 @@ APlotGenerator::APlotGenerator()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	deflateDistance *= 100;
+
 }
 
 // Called when the game starts or when spawned
@@ -287,10 +289,10 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 		}
 	}
 
-	//for (int i = 0; i < plotArray.Num(); i++)
-	//{
-	//	plotArray[i] = DeflatePolygon(plotArray[i]);
-	//}
+	for (int i = 0; i < plotArray.Num(); i++)
+	{
+		plotArray[i] = DeflatePolygon(plotArray[i]);
+	}
 
 	return plotArray;
 }
@@ -465,8 +467,7 @@ FPlot APlotGenerator::DeflatePolygon(FPlot plot)
 {
 	FPlot deflatedPolygon;
 
-	//convert meters to unreal units
-	deflateDistance *= 100;
+	//convert meters to unreal unit
 
 	for (int i = 0; i < plot.points.Num(); i++)
 	{
@@ -580,9 +581,7 @@ TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 	FVector C = plot.points[2];
 	FVector D = plot.points[3];
 
-	int MinPlotWidth = 4600;
-
-	int NumDivisions = FMath::FloorToInt(FVector::Dist(A, B) / MinPlotWidth);
+	int NumDivisions = FMath::FloorToInt(FVector::Dist(A, B) / MinLotWidth);
 	NumDivisions = FMath::Max(1, NumDivisions);
 
 	for (int i = 0; i < NumDivisions; ++i)	//change

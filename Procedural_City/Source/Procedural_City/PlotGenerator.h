@@ -38,6 +38,7 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float deflateDistance = -10;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") float minPlotSize = 8000;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Plot Generation|General") int MinLotWidth = 4600;
 	
 
 public:	
