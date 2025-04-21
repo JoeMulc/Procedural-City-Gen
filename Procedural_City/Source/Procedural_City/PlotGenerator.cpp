@@ -571,10 +571,20 @@ TArray<FVector> APlotGenerator::FinalizePlots(TArray<FPlot> &plotArr)
 
 TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 {
+	TArray<FLot> lots;
+
+	if (plot.points.Num() != 4)
+	{
+		FLot lot;
+
+		lot.points = plot.points;
+		lots.Push(lot);
+
+		return lots;
+	}
+
 	FVector edge1 = plot.points[0] - plot.points[1];
 	FVector edge2 = plot.points[2] - plot.points[3];
-
-	TArray<FLot> lots;
 
 	FVector A = plot.points[0];
 	FVector B = plot.points[1];
