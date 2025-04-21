@@ -573,7 +573,7 @@ TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 {
 	TArray<FLot> lots;
 
-	if (plot.points.Num() != 4)
+	if (plot.points.Num() != 4 || CalculateArea(plot.points) <= minPlotSize)
 	{
 		FLot lot;
 		lot.points = plot.points;
@@ -590,36 +590,59 @@ TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 	float width = FVector::Dist(A, B);
 	float height = FVector::Dist(A, D);
 
-	int DivX = FMath::Max(1, FMath::FloorToInt(width / MinLotWidth));
-	int DivY = FMath::Max(1, FMath::FloorToInt(height / MinLotWidth));
+	TArray<float> yCuts = GenerateIrregularCuts(height, MinLotWidth);
+	TArray<float> xCuts = GenerateIrregularCuts(width, MinLotWidth);
 
-	for (int y = 0; y < DivY; ++y)
+	for (int y = 0; y < yCuts.Num() - 1; ++y)
 	{
-		float TTop0 = (float)y / DivY;
-		float TTop1 = (float)(y + 1) / DivY;
+		float TTop0 = yCuts[y];
+		float TTop1 = yCuts[y + 1];
 
-		// Interpolate across the vertical (left and right) edges
-		FVector LeftStart = FMath::Lerp(A, D, TTop0);
-		FVector LeftEnd = FMath::Lerp(A, D, TTop1);
-		FVector RightStart = FMath::Lerp(B, C, TTop0);
-		FVector RightEnd = FMath::Lerp(B, C, TTop1);
+		FVector leftStart = FMath::Lerp(A, D, TTop0);
+		FVector leftEnd = FMath::Lerp(A, D, TTop1);
+		FVector rightStart = FMath::Lerp(B, C, TTop0);
+		FVector rightEnd = FMath::Lerp(B, C, TTop1);
 
-		for (int x = 0; x < DivX; ++x)
+		for (int x = 0; x < xCuts.Num() - 1; ++x)
 		{
-			float TSide0 = (float)x / DivX;
-			float TSide1 = (float)(x + 1) / DivX;
+			bool isEdgeLot((x == 0) || (x == xCuts.Num() - 2) || (y == 0) || (y == yCuts.Num() - 2));
+			if (!isEdgeLot) continue;
 
-			// Interpolate across current horizontal segment
-			FVector TopLeft = FMath::Lerp(LeftStart, RightStart, TSide0);
-			FVector TopRight = FMath::Lerp(LeftStart, RightStart, TSide1);
-			FVector BottomRight = FMath::Lerp(LeftEnd, RightEnd, TSide1);
-			FVector BottomLeft = FMath::Lerp(LeftEnd, RightEnd, TSide0);
+			float TSide0 = xCuts[x];
+			float TSide1 = xCuts[x + 1];
+
+			FVector topLeft = FMath::Lerp(leftStart, rightStart, TSide0);
+			FVector topRight = FMath::Lerp(leftStart, rightStart, TSide1);
+			FVector bottomRight = FMath::Lerp(leftEnd, rightEnd, TSide1);
+			FVector bottomLeft = FMath::Lerp(leftEnd, rightEnd, TSide0);
 
 			FLot lot;
-			lot.points = { TopLeft, TopRight, BottomRight, BottomLeft };
+			lot.points = { topLeft, topRight, bottomRight, bottomLeft };
 			lots.Push(lot);
 		}
 	}
 
 	return lots;
+}
+
+TArray<float> APlotGenerator::GenerateIrregularCuts(float totalLength, float minSize)
+{
+	TArray<float> cuts;
+	cuts.Add(0.0f);
+
+	float current = 0.0f;
+	while (current < 1.0f - 0.5f)
+	{
+		float maxStep = FMath::Min(0.5f, 1.0f - current);
+		float step = FMath::RandRange(minSize / totalLength, maxStep);
+		current += step;
+
+		if (current < 1.0f)
+		{
+			cuts.Add(current);
+		}
+	}
+
+	cuts.Add(1.0f);
+	return cuts;
 }
