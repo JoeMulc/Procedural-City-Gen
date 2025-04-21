@@ -576,44 +576,50 @@ TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 	if (plot.points.Num() != 4)
 	{
 		FLot lot;
-
 		lot.points = plot.points;
 		lots.Push(lot);
-
 		return lots;
 	}
 
-	FVector edge1 = plot.points[0] - plot.points[1];
-	FVector edge2 = plot.points[2] - plot.points[3];
+	FVector A = plot.points[0]; // Top-left
+	FVector B = plot.points[1]; // Top-right
+	FVector C = plot.points[2]; // Bottom-right
+	FVector D = plot.points[3]; // Bottom-left
 
-	FVector A = plot.points[0];
-	FVector B = plot.points[1];
-	FVector C = plot.points[2];
-	FVector D = plot.points[3];
+	// Edges
+	float width = FVector::Dist(A, B);
+	float height = FVector::Dist(A, D);
 
-	int NumDivisions = FMath::FloorToInt(FVector::Dist(A, B) / MinLotWidth);
-	NumDivisions = FMath::Max(1, NumDivisions);
+	int DivX = FMath::Max(1, FMath::FloorToInt(width / MinLotWidth));
+	int DivY = FMath::Max(1, FMath::FloorToInt(height / MinLotWidth));
 
-	for (int i = 0; i < NumDivisions; ++i)	//change
+	for (int y = 0; y < DivY; ++y)
 	{
-		float T0 = (float)i / NumDivisions;
-		float T1 = (float)(i + 1) / NumDivisions;
+		float TTop0 = (float)y / DivY;
+		float TTop1 = (float)(y + 1) / DivY;
 
-		FVector EdgeStart1 = FMath::Lerp(A, B, T0);
-		FVector EdgeEnd1 = FMath::Lerp(A, B, T1);
-		FVector EdgeStart2 = FMath::Lerp(D, C, T0);
-		FVector EdgeEnd2 = FMath::Lerp(D, C, T1);
+		// Interpolate across the vertical (left and right) edges
+		FVector LeftStart = FMath::Lerp(A, D, TTop0);
+		FVector LeftEnd = FMath::Lerp(A, D, TTop1);
+		FVector RightStart = FMath::Lerp(B, C, TTop0);
+		FVector RightEnd = FMath::Lerp(B, C, TTop1);
 
+		for (int x = 0; x < DivX; ++x)
+		{
+			float TSide0 = (float)x / DivX;
+			float TSide1 = (float)(x + 1) / DivX;
 
-		FLot l;
-		l.points.Push(EdgeStart1);
-		l.points.Push(EdgeEnd1);
-		l.points.Push(EdgeStart2);
-		l.points.Push(EdgeEnd2);
+			// Interpolate across current horizontal segment
+			FVector TopLeft = FMath::Lerp(LeftStart, RightStart, TSide0);
+			FVector TopRight = FMath::Lerp(LeftStart, RightStart, TSide1);
+			FVector BottomRight = FMath::Lerp(LeftEnd, RightEnd, TSide1);
+			FVector BottomLeft = FMath::Lerp(LeftEnd, RightEnd, TSide0);
 
-		lots.Push(l);
+			FLot lot;
+			lot.points = { TopLeft, TopRight, BottomRight, BottomLeft };
+			lots.Push(lot);
+		}
 	}
 
 	return lots;
-
 }
