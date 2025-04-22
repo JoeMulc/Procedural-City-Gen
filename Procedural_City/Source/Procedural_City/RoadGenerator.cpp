@@ -316,13 +316,17 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 		//get centre of final road to be compared
 		FVector finalMid = (road.End - road.Start) / 2 + road.Start;
 
+		FVector intPoint;
+
+		bool intersection = FMath::SegmentIntersection2D(TrimStart(road.Start, road.End), TrimEnd(road.Start, road.End), TrimStart(current->segment->Start, current->segment->End), TrimEnd(current->segment->Start, current->segment->End), intPoint);
+
 		//Check distance based on road size - magic number here fix me!!!!!!!
 		switch (current->segment->roadType)
 		{
 		case(ERoadType::Secondary):
 			if (road.roadType == ERoadType::Main)													
 			{
-				if (FVector::Dist(finalMid, propMid) < 200)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
+				if (intersection)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 				{
 					//Intersecting
 					intNet.Push(*current->segment);
@@ -336,7 +340,7 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 					return false;
 				}
 			}
-			else if (FVector::Dist(finalMid, propMid) < 100)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
+			else if (intersection)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
 				//Intersecting
 				intNet.Push(*current->segment);
@@ -351,14 +355,14 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 			}
 			break;
 		case(ERoadType::Coastal):
-			if (FVector::Dist(finalMid, propMid) < 150)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
+			if (intersection)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
 				UE_LOG(LogTemp, Display, TEXT("new"));
 				return false;
 			}
 			break;
 		default:
-			if (FVector::Dist(finalMid, propMid) < 150 )												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
+			if (intersection)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
 				//Intersecting
 				intNet.Push(*current->segment);
@@ -461,4 +465,19 @@ ETurnType ARoadGenerator::LeftOrRightIntersection(FRoad intersectingRoad, FRoad 
 	{
 		return ETurnType::IntersectingLeft;
 	}
+}
+
+
+FVector ARoadGenerator::TrimStart(FVector start, FVector end)
+{
+	FVector direction = (end - start).GetSafeNormal2D();
+
+	return FVector(start + direction * 25);
+}
+
+FVector ARoadGenerator::TrimEnd(FVector start, FVector end)
+{
+	FVector direction = (end - start).GetSafeNormal2D();
+
+	return FVector(end - direction * 25);
 }
