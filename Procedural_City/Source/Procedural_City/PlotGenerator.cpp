@@ -78,6 +78,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 					{
 						if (road.sideRoadStart[0] == currentIntersection.End || road.sideRoadStart.Last() == currentIntersection.End)
 						{
+							roadFound = true;
 							currentIntersection = road;
 							currentPlot.points.Push(currentIntersection.Start);
 							if (road.roadTurnType == ETurnType::IntersectingLeft)
@@ -97,8 +98,12 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 					}
 				
 				}
+				if (roadFound == false)
+				{
+					UE_LOG(LogTemp, Display, TEXT("Intersecting - No Road Found"));
+					currentIntersection.Start = badRoad;
+				}
 
-				currentIntersection.Start = badRoad;
 				break;
 
 			case(ETurnType::Left):
@@ -272,7 +277,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 				UE_LOG(LogTemp, Warning, TEXT("Bad plot"));
 				currentPlot.points.Empty();
 			}
-			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0] && currentPlot.points.Num() <= 4)
+			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0] && currentPlot.points.Num() >= 4)
 			{
 				plotFormed = true;
 				UE_LOG(LogTemp, Warning, TEXT("Plot formed lets go!"));

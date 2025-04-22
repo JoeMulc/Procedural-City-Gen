@@ -336,7 +336,7 @@ bool ARoadGenerator::CheckGlobalConstraints(TArray<FRoad> finalNetwork, FPropose
 					return false;
 				}
 			}
-			else if (FVector::Dist(finalMid, propMid) < 150)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
+			else if (FVector::Dist(finalMid, propMid) < 100)												//TERRIBLE DIST CHECK MAKE BETTER!!!!!!!
 			{
 				//Intersecting
 				intNet.Push(*current->segment);
