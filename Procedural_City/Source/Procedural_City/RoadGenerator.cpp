@@ -472,12 +472,12 @@ FVector ARoadGenerator::TrimStart(FVector start, FVector end)
 {
 	FVector direction = (end - start).GetSafeNormal2D();
 
-	return FVector(start + direction * 25);
+	return FVector(start + direction * 2);
 }
 
 FVector ARoadGenerator::TrimEnd(FVector start, FVector end)
 {
 	FVector direction = (end - start).GetSafeNormal2D();
 
-	return FVector(end - direction * 25);
+	return FVector(end - direction * 2);
 }

@@ -14,21 +14,21 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define PROCEDURAL_CITY_RoadSpec_generated_h
 
-#define FID_Procedural_City_Source_Procedural_City_RoadSpec_h_33_GENERATED_BODY \
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_RoadSpec_h_33_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FRoad_Statics; \
 	PROCEDURAL_CITY_API static class UScriptStruct* StaticStruct();
 
 
 template<> PROCEDURAL_CITY_API UScriptStruct* StaticStruct<struct FRoad>();
 
-#define FID_Procedural_City_Source_Procedural_City_RoadSpec_h_58_GENERATED_BODY \
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_RoadSpec_h_58_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FPlot_Statics; \
 	PROCEDURAL_CITY_API static class UScriptStruct* StaticStruct();
 
 
 template<> PROCEDURAL_CITY_API UScriptStruct* StaticStruct<struct FPlot>();
 
-#define FID_Procedural_City_Source_Procedural_City_RoadSpec_h_66_GENERATED_BODY \
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_RoadSpec_h_66_GENERATED_BODY \
 	friend struct Z_Construct_UScriptStruct_FLot_Statics; \
 	PROCEDURAL_CITY_API static class UScriptStruct* StaticStruct();
 
@@ -36,7 +36,7 @@ template<> PROCEDURAL_CITY_API UScriptStruct* StaticStruct<struct FPlot>();
 template<> PROCEDURAL_CITY_API UScriptStruct* StaticStruct<struct FLot>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Procedural_City_Source_Procedural_City_RoadSpec_h
+#define CURRENT_FILE_ID FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_RoadSpec_h
 
 
 #define FOREACH_ENUM_EROADTYPE(op) \

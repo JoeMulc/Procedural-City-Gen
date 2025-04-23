@@ -280,20 +280,20 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 			}
 
 			//Check validity of plot
-			if (currentIntersection.Start == badRoad)
-			{
-				plotFormed = true;
-				UE_LOG(LogTemp, Warning, TEXT("Bad plot"));
-				currentPlot.points.Empty();
-			}
-			else if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0] && currentPlot.points.Num() >= 4)
+			if (!currentPlot.points.IsEmpty() && currentIntersection.Start == currentPlot.points[0] && currentPlot.points.Num() == 4)
 			{
 				plotFormed = true;
 				UE_LOG(LogTemp, Warning, TEXT("Plot formed lets go!"));
 				plotArray.Push(currentPlot);
 				currentPlot.points.Empty();
 			}
-			if (tracker >= 10)
+			else if (currentIntersection.Start == badRoad)
+			{
+				plotFormed = true;
+				UE_LOG(LogTemp, Warning, TEXT("Bad plot"));
+				currentPlot.points.Empty();
+			}
+			if (tracker >= 30)
 			{
 				plotFormed = true;
 				UE_LOG(LogTemp, Warning, TEXT("Tracker limit reached"));
@@ -312,7 +312,7 @@ TArray<FPlot> APlotGenerator::GeneratePlots(TArray<FRoad> finNet)
 	return plotArray;
 }
 
-FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad)
+FRoad APlotGenerator::FindIntersection(bool traverseForward, TArray<FRoad>& finNet, FRoad currentRoad)
 {
 	bool intersectionFound = false;
 	bool roadFound = false;
@@ -589,7 +589,7 @@ TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 {
 	TArray<FLot> lots;
 
-	if (plot.points.Num() != 4 || CalculateArea(plot.points) <= minPlotSize)
+	if (plot.points.Num() != 4)
 	{
 		FLot lot;
 		lot.points = plot.points;
@@ -597,44 +597,45 @@ TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 		return lots;
 	}
 
-	FVector A = plot.points[0]; // Top-left
-	FVector B = plot.points[1]; // Top-right
-	FVector C = plot.points[2]; // Bottom-right
-	FVector D = plot.points[3]; // Bottom-left
+	FVector A = plot.points[0];
+	FVector B = plot.points[1];
+	FVector C = plot.points[2];
+	FVector D = plot.points[3];
 
-	// Edges
 	float width = FVector::Dist(A, B);
 	float height = FVector::Dist(A, D);
 
-	TArray<float> yCuts = GenerateIrregularCuts(height, MinLotWidth);
-	TArray<float> xCuts = GenerateIrregularCuts(width, MinLotWidth);
+	int32 DivX = FMath::Max(1, FMath::FloorToInt(width / MinLotWidth));
+	int32 DivY = FMath::Max(1, FMath::FloorToInt(height / MinLotWidth));
 
-	for (int y = 0; y < yCuts.Num() - 1; ++y)
+	for (int32 yIndex = 0; yIndex < DivY; ++yIndex)
 	{
-		float TTop0 = yCuts[y];
-		float TTop1 = yCuts[y + 1];
+		float TTop0 = (float)yIndex / DivY;
+		float TTop1 = (float)(yIndex + 1) / DivY;
 
-		FVector leftStart = FMath::Lerp(A, D, TTop0);
-		FVector leftEnd = FMath::Lerp(A, D, TTop1);
-		FVector rightStart = FMath::Lerp(B, C, TTop0);
-		FVector rightEnd = FMath::Lerp(B, C, TTop1);
+		FVector LeftStart = FMath::Lerp(A, D, TTop0);
+		FVector LeftEnd = FMath::Lerp(A, D, TTop1);
+		FVector RightStart = FMath::Lerp(B, C, TTop0);
+		FVector RightEnd = FMath::Lerp(B, C, TTop1);
 
-		for (int x = 0; x < xCuts.Num() - 1; ++x)
+		for (int32 xIndex = 0; xIndex < DivX; ++xIndex)
 		{
-			bool isEdgeLot((x == 0) || (x == xCuts.Num() - 2) || (y == 0) || (y == yCuts.Num() - 2));
-			if (!isEdgeLot) continue;
+			bool bIsEdgeLot = (xIndex == 0 || xIndex == DivX - 1 || yIndex == 0 || yIndex == DivY - 1);
 
-			float TSide0 = xCuts[x];
-			float TSide1 = xCuts[x + 1];
+			if (bIsEdgeLot)
+			{
+				float TSide0 = (float)xIndex / DivX;
+				float TSide1 = (float)(xIndex + 1) / DivX;
 
-			FVector topLeft = FMath::Lerp(leftStart, rightStart, TSide0);
-			FVector topRight = FMath::Lerp(leftStart, rightStart, TSide1);
-			FVector bottomRight = FMath::Lerp(leftEnd, rightEnd, TSide1);
-			FVector bottomLeft = FMath::Lerp(leftEnd, rightEnd, TSide0);
+				FVector TopLeft = FMath::Lerp(LeftStart, RightStart, TSide0);
+				FVector TopRight = FMath::Lerp(LeftStart, RightStart, TSide1);
+				FVector BottomRight = FMath::Lerp(LeftEnd, RightEnd, TSide1);
+				FVector BottomLeft = FMath::Lerp(LeftEnd, RightEnd, TSide0);
 
-			FLot lot;
-			lot.points = { topLeft, topRight, bottomRight, bottomLeft };
-			lots.Push(lot);
+				FLot lot;
+				lot.points = { TopLeft, TopRight, BottomRight, BottomLeft };
+				lots.Push(lot);
+			}
 		}
 	}
 

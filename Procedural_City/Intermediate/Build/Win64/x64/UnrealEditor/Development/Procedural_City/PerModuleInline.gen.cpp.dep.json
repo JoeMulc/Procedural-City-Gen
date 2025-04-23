@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "d:\\year_4\\dissertation\\procedural-city-gen\\procedural_city\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\procedural_city\\permoduleinline.gen.cpp",
+        "ProvidedModule": "",
+        "PCH": "d:\\year_4\\dissertation\\procedural-city-gen\\procedural_city\\intermediate\\build\\win64\\x64\\procedural_cityeditor\\development\\unrealed\\sharedpch.unrealed.project.valapi.cpp20.inclorderunreal5_4.h.pch",
+        "Includes": [
+            "d:\\year_4\\dissertation\\procedural-city-gen\\procedural_city\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\procedural_city\\definitions.procedural_city.h",
+            "d:\\epic games\\ue_5.5\\engine\\source\\runtime\\core\\public\\hal\\permoduleinline.inl"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

@@ -33,41 +33,41 @@
     <ClCompile Include="..\..\Source\Procedural_City\PlotGenerator.cpp">
       <Filter>Source\Procedural_City</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Procedural_City\PlotGenerator.h">
+    <ClCompile Include="..\..\Source\Procedural_City\PlotGenerator.h">
       <Filter>Source\Procedural_City</Filter>
-    </ClInclude>
+    </ClCompile>
     <None Include="..\..\Source\Procedural_City\Procedural_City.Build.cs">
       <Filter>Source\Procedural_City</Filter>
     </None>
     <ClCompile Include="..\..\Source\Procedural_City\Procedural_City.cpp">
       <Filter>Source\Procedural_City</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Procedural_City\Procedural_City.h">
+    <ClCompile Include="..\..\Source\Procedural_City\Procedural_City.h">
       <Filter>Source\Procedural_City</Filter>
-    </ClInclude>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Procedural_City\RoadGenerator.cpp">
       <Filter>Source\Procedural_City</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Procedural_City\RoadGenerator.h">
+    <ClCompile Include="..\..\Source\Procedural_City\RoadGenerator.h">
       <Filter>Source\Procedural_City</Filter>
-    </ClInclude>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Procedural_City\RoadSpec.cpp">
       <Filter>Source\Procedural_City</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Procedural_City\RoadSpec.h">
+    <ClCompile Include="..\..\Source\Procedural_City\RoadSpec.h">
       <Filter>Source\Procedural_City</Filter>
-    </ClInclude>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Procedural_City\RoadSpecs.cpp">
       <Filter>Source\Procedural_City</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Procedural_City\RoadSpecs.h">
+    <ClCompile Include="..\..\Source\Procedural_City\RoadSpecs.h">
       <Filter>Source\Procedural_City</Filter>
-    </ClInclude>
+    </ClCompile>
     <ClCompile Include="..\..\Source\Procedural_City\WaterBoundingBox.cpp">
       <Filter>Source\Procedural_City</Filter>
     </ClCompile>
-    <ClInclude Include="..\..\Source\Procedural_City\WaterBoundingBox.h">
+    <ClCompile Include="..\..\Source\Procedural_City\WaterBoundingBox.h">
       <Filter>Source\Procedural_City</Filter>
-    </ClInclude>
+    </ClCompile>
   </ItemGroup>
 </Project>

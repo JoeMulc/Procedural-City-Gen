@@ -34,7 +34,7 @@ protected:
 
 	TArray<float> GenerateIrregularCuts(float totalLength, float minSize);
 
-	FRoad FindIntersection(bool traverseForward, TArray<FRoad> finNet, FRoad currentRoad);
+	FRoad FindIntersection(bool traverseForward, TArray<FRoad>& finNet, FRoad currentRoad);
 	bool determineTraversePath(bool intersected, bool traverseLeft, TArray<FRoad> finNet, FRoad currentRoad);
 
 	

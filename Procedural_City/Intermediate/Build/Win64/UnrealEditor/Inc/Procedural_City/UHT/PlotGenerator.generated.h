@@ -17,7 +17,7 @@ struct FRoad;
 #endif
 #define PROCEDURAL_CITY_PlotGenerator_generated_h
 
-#define FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
 	DECLARE_FUNCTION(execSubdivideToLots); \
 	DECLARE_FUNCTION(execDeflatePolygon); \
 	DECLARE_FUNCTION(execCalculateArea); \
@@ -25,7 +25,7 @@ struct FRoad;
 	DECLARE_FUNCTION(execGeneratePlots);
 
 
-#define FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_INCLASS_NO_PURE_DECLS \
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAPlotGenerator(); \
 	friend struct Z_Construct_UClass_APlotGenerator_Statics; \
@@ -34,7 +34,7 @@ public: \
 	DECLARE_SERIALIZER(APlotGenerator)
 
 
-#define FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_ENHANCED_CONSTRUCTORS \
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	APlotGenerator(APlotGenerator&&); \
@@ -46,13 +46,13 @@ public: \
 	NO_API virtual ~APlotGenerator();
 
 
-#define FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_10_PROLOG
-#define FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_GENERATED_BODY \
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_10_PROLOG
+#define FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
-	FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_INCLASS_NO_PURE_DECLS \
-	FID_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_ENHANCED_CONSTRUCTORS \
+	FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+	FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_INCLASS_NO_PURE_DECLS \
+	FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h_13_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -60,7 +60,7 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> PROCEDURAL_CITY_API UClass* StaticClass<class APlotGenerator>();
 
 #undef CURRENT_FILE_ID
-#define CURRENT_FILE_ID FID_Procedural_City_Source_Procedural_City_PlotGenerator_h
+#define CURRENT_FILE_ID FID_Year_4_Dissertation_Procedural_City_Gen_Procedural_City_Source_Procedural_City_PlotGenerator_h
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
