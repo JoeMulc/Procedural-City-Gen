@@ -466,7 +466,7 @@ float APlotGenerator::CalculateArea(TArray<FVector> points)	//Believe this is wo
 		area += (points[i].X * points[(i + 1) % points.Num()].Y) - (points[i].Y * points[(i + 1) % points.Num()].X);
 	}
 	area = area / 2;
-	
+
 	//Change negative value to positive
 	if (area < 0)
 	{
@@ -483,26 +483,33 @@ FPlot APlotGenerator::DeflatePolygon(FPlot plot)
 {
 	FPlot deflatedPolygon;
 
-	//convert meters to unreal unit
-
+	//Loop through each vertex in the initial plot
 	for (int i = 0; i < plot.points.Num(); i++)
 	{
+		//First vertex
 		FVector current = plot.points[i];
+		//Next Vertex - modulo too wrap at end
 		FVector next = plot.points[(i + 1) % plot.points.Num()];
+		//Previous vertex - mudulo to wrap at start
 		FVector prev = plot.points[(i - 1 + plot.points.Num()) % plot.points.Num()];
 
+		//Caclulate edges from current vertex
 		FVector edge1 = current - prev;
 		FVector edge2 = next - current;
 
+		//Get vector normals
 		edge1 = FVector(-edge1.Y, edge1.X, 0);
 		edge2 = FVector(-edge2.Y, edge2.X, 0);
 
+		//Get unit vectors
 		edge1.Normalize();
 		edge2.Normalize();
 
+		//Average two normals to get bisector 
 		FVector avgNormal = edge1 + edge2;
 		avgNormal.Normalize();
 
+		//Move vertex along bisector 
 		FVector newVertex = current + (avgNormal * deflateDistance);
 
 		deflatedPolygon.points.Push(newVertex);
@@ -511,6 +518,8 @@ FPlot APlotGenerator::DeflatePolygon(FPlot plot)
 
 	return deflatedPolygon;
 }
+
+
 
 //Combine Plots that are too small and determine roads to destroy
 TArray<FVector> APlotGenerator::FinalizePlots(TArray<FPlot> &plotArr)
@@ -585,10 +594,12 @@ TArray<FVector> APlotGenerator::FinalizePlots(TArray<FPlot> &plotArr)
 
 }
 
+//subdivides into evennsegements could imrpove
 TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 {
 	TArray<FLot> lots;
 
+	//Plot must have 4 points
 	if (plot.points.Num() != 4)
 	{
 		FLot lot;
@@ -597,43 +608,55 @@ TArray<FLot> APlotGenerator::SubdivideToLots(FPlot plot)
 		return lots;
 	}
 
+	//Get points of polygon
 	FVector A = plot.points[0];
 	FVector B = plot.points[1];
 	FVector C = plot.points[2];
 	FVector D = plot.points[3];
 
+	//Get width and height of bounding box
 	float width = FVector::Dist(A, B);
 	float height = FVector::Dist(A, D);
 
-	int32 DivX = FMath::Max(1, FMath::FloorToInt(width / MinLotWidth));
-	int32 DivY = FMath::Max(1, FMath::FloorToInt(height / MinLotWidth));
+	//Gather number of subdivisions needed for min plot width - max ensures atleast one subdivison happens
+	int32 xDivisions = FMath::Max(1, FMath::FloorToInt(width / MinLotWidth));
+	int32 yDivisions = FMath::Max(1, FMath::FloorToInt(height / MinLotWidth));
 
-	for (int32 yIndex = 0; yIndex < DivY; ++yIndex)
+	//Loop over each horizontal row
+	for (int32 yIndex = 0; yIndex < yDivisions; ++yIndex)
 	{
-		float TTop0 = (float)yIndex / DivY;
-		float TTop1 = (float)(yIndex + 1) / DivY;
+		//Values for interpolation along the y axis
+		float startPosTop = (float)yIndex / yDivisions;
+		float endPosTop = (float)(yIndex + 1) / yDivisions;
 
-		FVector LeftStart = FMath::Lerp(A, D, TTop0);
-		FVector LeftEnd = FMath::Lerp(A, D, TTop1);
-		FVector RightStart = FMath::Lerp(B, C, TTop0);
-		FVector RightEnd = FMath::Lerp(B, C, TTop1);
+		//Lerp along left and right bounds to find the points for this row
+		FVector leftStart = FMath::Lerp(A, D, startPosTop);
+		FVector leftEnd = FMath::Lerp(A, D, endPosTop);
+		FVector rightStart = FMath::Lerp(B, C, startPosTop);
+		FVector rightEnd = FMath::Lerp(B, C, endPosTop);
 
-		for (int32 xIndex = 0; xIndex < DivX; ++xIndex)
+		//Loop over each vertical column
+		for (int32 xIndex = 0; xIndex < xDivisions; ++xIndex)
 		{
-			bool bIsEdgeLot = (xIndex == 0 || xIndex == DivX - 1 || yIndex == 0 || yIndex == DivY - 1);
+			//Ensures only lots touching at least one edge are retunred - i.e. road acess
+			bool edgeLot = (xIndex == 0 || xIndex == xDivisions - 1 || yIndex == 0 || yIndex == yDivisions - 1);
 
-			if (bIsEdgeLot)
+			//If lot touches edge
+			if (edgeLot)
 			{
-				float TSide0 = (float)xIndex / DivX;
-				float TSide1 = (float)(xIndex + 1) / DivX;
+				//Vlaues for interpolation along x axis
+				float startPosSide = (float)xIndex / xDivisions;
+				float endPosSide = (float)(xIndex + 1) / xDivisions;
 
-				FVector TopLeft = FMath::Lerp(LeftStart, RightStart, TSide0);
-				FVector TopRight = FMath::Lerp(LeftStart, RightStart, TSide1);
-				FVector BottomRight = FMath::Lerp(LeftEnd, RightEnd, TSide1);
-				FVector BottomLeft = FMath::Lerp(LeftEnd, RightEnd, TSide0);
+				//Interpolate 4 points to find corners of the lot
+				FVector topLeft = FMath::Lerp(leftStart, rightStart, startPosSide);
+				FVector topRight = FMath::Lerp(leftStart, rightStart, endPosSide);
+				FVector bottomRight = FMath::Lerp(leftEnd, rightEnd, endPosSide);
+				FVector bottomLeft = FMath::Lerp(leftEnd, rightEnd, startPosSide);
 
+				//Create and push new lot
 				FLot lot;
-				lot.points = { TopLeft, TopRight, BottomRight, BottomLeft };
+				lot.points = { topLeft, topRight, bottomRight, bottomLeft };
 				lots.Push(lot);
 			}
 		}
